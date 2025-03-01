@@ -27,5 +27,4 @@ public class RecipeStep {
     @Column(nullable = true)
     private Integer estimatedTime; // 분 단위
 
-    // Getter, Setter, Constructor 등이 필요하면 추가
 }

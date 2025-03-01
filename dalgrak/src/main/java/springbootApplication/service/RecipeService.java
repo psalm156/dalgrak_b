@@ -17,17 +17,16 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
 
-    // ✅ 전체 레시피 조회
+    // 전체 레시피 조회
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
-    // ✅ 특정 레시피 조회 (ID 기준)
-    public Optional<Recipe> getRecipeById(Long id) {
-        return recipeRepository.findById(id);
+    public List<Recipe> findRecipesByKeyword(String keyword) {
+        return recipeRepository.findByTitleContaining(keyword);
     }
 
-    // ✅ 레시피 생성 (Recipe 객체 사용)
+    // 레시피 생성 (Recipe 객체 사용)
     @Transactional
     public Recipe saveRecipe(RecipeRequestDto dto) {
         Difficulty difficulty;
@@ -45,7 +44,7 @@ public class RecipeService {
         return recipeRepository.save(recipe); // save() 호출
     }
 
-    // ✅ 레시피 수정 (Recipe 객체 사용)
+    // 레시피 수정 (Recipe 객체 사용)
     @Transactional
     public Recipe updateRecipe(Long id, Recipe updatedRecipe) {
         return recipeRepository.findById(id)
@@ -59,7 +58,7 @@ public class RecipeService {
                 .orElseThrow(() -> new RuntimeException("Recipe not found"));
     }
 
-    // ✅ 레시피 삭제
+    // 레시피 삭제
     @Transactional
     public void deleteRecipe(Long id) {
         if (!recipeRepository.existsById(id)) {
@@ -68,18 +67,33 @@ public class RecipeService {
         recipeRepository.deleteById(id);
     }
 
-    // ✅ 키워드 검색
-    public List<Recipe> findRecipesByKeyword(String keyword) {
-        return recipeRepository.findByTitleContaining(keyword);
-    }
-
-    // ✅ 난이도로 필터링
-    public List<Recipe> findByDifficulty(Difficulty difficulty) {
-        return recipeRepository.findByDifficulty(difficulty);
-    }
-
-    // ✅ 준비 시간별 레시피 검색
-    public List<Recipe> findRecipesByPreparationTime(int preparationTime) {
-        return recipeRepository.findByPreparationTime(preparationTime);
+    public List<Recipe> filterRecipes(Optional<String> category, Optional<Difficulty> difficulty, Optional<Integer> preparationTime) {
+        if (category.isPresent() && difficulty.isPresent() && preparationTime.isPresent()) {
+            // 모든 필터가 있을 때
+            return recipeRepository.findByCategoryAndDifficultyAndPreparationTime(
+                    category.get(), difficulty.get(), preparationTime.get());
+        } else if (category.isPresent() && difficulty.isPresent()) {
+            // category와 difficulty만 있을 때
+            return recipeRepository.findByCategoryAndDifficulty(category.get(), difficulty.get());
+        } else if (category.isPresent() && preparationTime.isPresent()) {
+            // category와 preparationTime만 있을 때
+            return recipeRepository.findByCategoryAndPreparationTime(category.get(), preparationTime.get());
+        } else if (difficulty.isPresent() && preparationTime.isPresent()) {
+            // difficulty와 preparationTime만 있을 때
+            return recipeRepository.findByDifficultyAndPreparationTime(difficulty.get(), preparationTime.get());
+        } else if (category.isPresent()) {
+            // category만 있을 때
+            return recipeRepository.findByCategory(category.get());
+        } else if (difficulty.isPresent()) {
+            // difficulty만 있을 때
+            return recipeRepository.findByDifficulty(difficulty.get());
+        } else if (preparationTime.isPresent()) {
+            // preparationTime만 있을 때
+            return recipeRepository.findByPreparationTime(preparationTime.get());
+        } else {
+            // 모든 필터가 없을 때 (모든 레시피 반환)
+            return recipeRepository.findAll();
+        }
+    
     }
 }

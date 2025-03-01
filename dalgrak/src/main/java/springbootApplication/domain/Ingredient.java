@@ -19,7 +19,7 @@ public class Ingredient {
     private String name;
 
 
-    // 이 부분은 Ingredient와 RecipeIngredient 사이의 관계를 설정
+    // Ingredient와 RecipeIngredient 사이의 관계를 설정
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> recipes = new ArrayList<>();
 

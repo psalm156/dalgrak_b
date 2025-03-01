@@ -21,8 +21,8 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
-    private Long id;
+    @Column(name = "user_id", updatable = false)
+    private Long userId;
 
     @Column(name = "username", unique = true, length = 50)
     private String username;
@@ -32,6 +32,8 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
+    
+    @Column(name="phonenumber", unique = true, length=20)
 
     // 권한 반환 (ROLE_USER)
     @Override

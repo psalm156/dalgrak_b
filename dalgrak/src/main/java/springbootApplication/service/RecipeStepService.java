@@ -16,22 +16,22 @@ public class RecipeStepService {
         this.recipeStepRepository = recipeStepRepository;
     }
 
-    // 모든 레시피 단계를 조회합니다.
+    // 모든 레시피 단계를 조회
     public List<RecipeStep> getAllRecipeSteps() {
         return recipeStepRepository.findAll();
     }
 
-    // ID로 특정 레시피 단계를 조회합니다.
+    // ID로 특정 레시피 단계를 조회
     public Optional<RecipeStep> getRecipeStepById(Long id) {
         return recipeStepRepository.findById(id);
     }
 
-    // 새로운 레시피 단계를 생성합니다.
+    // 새로운 레시피 단계를 생성
     public RecipeStep createRecipeStep(RecipeStep recipeStep) {
         return recipeStepRepository.save(recipeStep);
     }
 
-    // 특정 ID의 레시피 단계를 업데이트합니다.
+    // 특정 ID의 레시피 단계를 업데이트
     public RecipeStep updateRecipeStep(Long id, RecipeStep updatedRecipeStep) {
         return recipeStepRepository.findById(id)
                 .map(recipeStep -> {
@@ -42,7 +42,7 @@ public class RecipeStepService {
                 }).orElseThrow(() -> new RuntimeException("Recipe step not found"));
     }
 
-    // 특정 ID의 레시피 단계를 삭제합니다.
+    // 특정 ID의 레시피 단계를 삭제
     public void deleteRecipeStep(Long id) {
         recipeStepRepository.deleteById(id);
     }
