@@ -29,6 +29,15 @@ public class Favorite {
 
     // 기본 생성자, Getter, Setter 메서드 등
 
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+  
+    public User getUser() {
+        return user;
+    }
+
     @Embeddable
     public static class FavoriteId implements Serializable {
 
@@ -51,6 +60,7 @@ public class Favorite {
         @Override
         public int hashCode() {
             return 31 * userId.hashCode() + recipeId.hashCode();
+            
         }
     }
 }

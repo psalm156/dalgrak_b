@@ -7,6 +7,9 @@ import springbootApplication.domain.Recipe;
 import springbootApplication.dto.RecipeRequestDto;
 import springbootApplication.domain.Difficulty;
 import springbootApplication.repository.RecipeRepository;
+import springbootApplication.repository.SubscriptionRepository;
+import springbootApplication.domain.Subscription;
+import springbootApplication.service.WebPushService;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,18 +19,19 @@ import java.util.Optional;
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final SubscriptionRepository subscriptionRepository;
+    private final WebPushService webPushService;  // WebPushService 주입
 
-    // ✅ 전체 레시피 조회
+
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
-    // ✅ 특정 레시피 조회 (ID 기준)
+    // ID기준 특정 레시피 조회
     public Optional<Recipe> getRecipeById(Long id) {
         return recipeRepository.findById(id);
     }
 
-    // ✅ 레시피 생성 (Recipe 객체 사용)
     @Transactional
     public Recipe saveRecipe(RecipeRequestDto dto) {
         Difficulty difficulty;
@@ -45,7 +49,6 @@ public class RecipeService {
         return recipeRepository.save(recipe); // save() 호출
     }
 
-    // ✅ 레시피 수정 (Recipe 객체 사용)
     @Transactional
     public Recipe updateRecipe(Long id, Recipe updatedRecipe) {
         return recipeRepository.findById(id)
@@ -59,7 +62,7 @@ public class RecipeService {
                 .orElseThrow(() -> new RuntimeException("Recipe not found"));
     }
 
-    // ✅ 레시피 삭제
+
     @Transactional
     public void deleteRecipe(Long id) {
         if (!recipeRepository.existsById(id)) {
@@ -68,17 +71,17 @@ public class RecipeService {
         recipeRepository.deleteById(id);
     }
 
-    // ✅ 키워드 검색
+
     public List<Recipe> findRecipesByKeyword(String keyword) {
         return recipeRepository.findByTitleContaining(keyword);
     }
 
-    // ✅ 난이도로 필터링
+
     public List<Recipe> findByDifficulty(Difficulty difficulty) {
         return recipeRepository.findByDifficulty(difficulty);
     }
 
-    // ✅ 준비 시간별 레시피 검색
+    //준비 시간별 레시피 검색 
     public List<Recipe> findRecipesByPreparationTime(int preparationTime) {
         return recipeRepository.findByPreparationTime(preparationTime);
     }
