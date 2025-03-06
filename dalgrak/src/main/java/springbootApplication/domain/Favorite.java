@@ -27,7 +27,6 @@ public class Favorite {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
-    // 기본 생성자, Getter, Setter 메서드 등
 
     public Recipe getRecipe() {
         return recipe;
@@ -47,7 +46,6 @@ public class Favorite {
         @Column(name = "recipe_id")
         private Long recipeId;
 
-        // 기본 생성자, Getter, Setter 메서드
 
         @Override
         public boolean equals(Object o) {

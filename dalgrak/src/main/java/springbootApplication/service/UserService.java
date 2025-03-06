@@ -24,21 +24,23 @@ public class UserService {
 
     // 사용자 저장 (회원가입)
     public Long save(AddUserRequest dto) {
+    	 if (userRepository.existsByEmail(dto.getEmail())) {
+             throw new RuntimeException("Email already in use"); // 이메일 중복 예외 처리
+         }
+
+         // 사용자 아이디 중복 확인 (userId가 중복되면 안됨)
+         if (userRepository.existsById(dto.getUserId())) {
+             throw new RuntimeException("UserId already in use"); // userId 중복 예외 처리
+         }
+         
         return userRepository.save(User.builder()
+        		.userId(dto.getUserId()) // userId가 중복되지 않도록 확인 후 사용
                 .email(dto.getEmail())
+                .username(dto.getName())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword())) // 비밀번호 암호화
-                .build()).getId();
+                .build()).getUserId();
     }
 
-    // 모든 사용자 조회
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    // 특정 사용자 조회
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
-    }
 
     // 사용자 생성
     public User createUser(User user) {

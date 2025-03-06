@@ -15,15 +15,16 @@ public class Recipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "recipe_id")
+    private Long recipeId;
 
     @Column(nullable = false, length = 255)
     private String title;
     
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String instructions;
 
-    @Column(nullable = false)
+    @Column(name = "preparation_time", nullable = false)
     private int preparationTime;
 
     @Enumerated(EnumType.STRING)

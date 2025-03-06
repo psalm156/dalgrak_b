@@ -17,13 +17,17 @@ import jakarta.validation.constraints.Email;
 @Builder // 추가
 public class AddUserRequest {
 
+	  
+	@NotNull(message = "UserId cannot be null")
+    private Long userId;
+
     @NotNull(message = "Email cannot be null")
     @Email(message = "Email should be valid")
     private String email;
-    
+
     @NotNull(message = "Password cannot be null")
     @Size(min = 6, message = "Password should be at least 6 characters long")
     private String password;
-    
+
     private String name;
 }
