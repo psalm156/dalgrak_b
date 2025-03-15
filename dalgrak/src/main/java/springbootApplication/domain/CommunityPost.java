@@ -18,12 +18,8 @@ public class CommunityPost {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User author;
+    private User user; 
 
-    @Enumerated(EnumType.STRING) 
-    @Column(nullable = false, length = 20)
-    private CommunityPostType postType;
-    
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
@@ -31,19 +27,17 @@ public class CommunityPost {
     private String title;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now(); 
+    private LocalDateTime createdAt = LocalDateTime.now();
+    
     @Column(nullable = false)
-    private LocalDateTime updatedAt = LocalDateTime.now(); 
-    
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-    
+    @Column(name = "board_type", nullable = false)
+    private String boardType; 
+
     @Builder
-    public CommunityPost(User author, String content, String title, CommunityPostType type) {
-        this.author = author;
+    public CommunityPost(User user, String content, String title) {
+        this.user = user;
         this.content = content;
         this.title = title;
         this.createdAt = LocalDateTime.now();

@@ -23,7 +23,7 @@ public class ImageService {
 
     private final CoverRepository coverRepository;
 
-    @Value("${file.path}") //application.yml에 설정한 경로의 값을 매핑
+    @Value("${file.path}")
     private String uploadFolder;
 
     @Transactional

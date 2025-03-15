@@ -28,7 +28,6 @@ public class CommentService {
 
         List<Subscription> subscriptions = subscriptionRepository.findByCommentId(comment.getId());
         
-        // 구독한 모든 사용자에게 푸시 알림 전송
         if (subscriptions != null && !subscriptions.isEmpty()) {
         for (Subscription subscription : subscriptions) {
             String message = userId + "님이 댓글을 달았습니다.";

@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -21,7 +20,6 @@ import java.util.Optional;
 public class RecipeController {
 
     private final RecipeService recipeService;
-	private int preparationTime;
 
     public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
@@ -33,6 +31,17 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.getAllRecipes());
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Get a recipe by ID", description = "Retrieve a recipe by its ID")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Recipe found"),
+        @ApiResponse(responseCode = "404", description = "Recipe not found")
+    })
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
+        return recipeService.getRecipeById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
     @PostMapping
     @Operation(summary = "Create a new recipe", description = "Add a new recipe")
@@ -68,14 +77,19 @@ public class RecipeController {
     }
 
     @GetMapping("/filter")
-    @Operation(summary = "Filter recipes", description = "Filter recipes by category, difficulty, and cooking time")
+    @Operation(summary = "Filter recipes", description = "Filter recipes by category and difficulty")
     public ResponseEntity<List<Recipe>> filterRecipes(
-            @RequestParam Optional<String> category,
-            @RequestParam Optional<Difficulty> difficulty,
-            @RequestParam Optional<Integer> preparationTime) {
-        List<Recipe> recipes = recipeService.filterRecipes(category, difficulty, preparationTime);
+            @RequestParam String category, 
+            @RequestParam Difficulty difficulty) {
+        List<Recipe> recipes = recipeService.findByDifficulty(difficulty);
         return ResponseEntity.ok(recipes);
     }
 
+    @GetMapping("/cooking-time")
+    @Operation(summary = "Find recipes by cooking time", description = "Retrieve recipes that match the given cooking time")
+    public ResponseEntity<List<Recipe>> findRecipesByCookingTime(@RequestParam int cookingTime) {
+        List<Recipe> recipes = recipeService.findRecipesByPreparationTime(cookingTime);
+        return ResponseEntity.ok(recipes);
+    }
 }
 
