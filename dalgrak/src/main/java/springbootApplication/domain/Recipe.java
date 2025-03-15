@@ -1,8 +1,8 @@
 package springbootApplication.domain;
 
-import jakarta.persistence.*; // JPA 관련 애너테이션 (Entity, Table, Column 등)
-import java.util.List; // List 인터페이스
-import java.util.ArrayList; // ArrayList 사용
+import jakarta.persistence.*;
+import java.util.List; 
+import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,5 +41,13 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> ingredients = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Timer> timers = new ArrayList<>();
+
+    public void addTimer(Timer timer) {
+        this.timers.add(timer);
+        timer.setRecipe(this);
+    }
 }
 

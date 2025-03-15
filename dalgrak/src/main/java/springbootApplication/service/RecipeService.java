@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springbootApplication.domain.Recipe;
+import springbootApplication.domain.Timer;
 import springbootApplication.dto.RecipeRequestDto;
 import springbootApplication.domain.Difficulty;
 import springbootApplication.repository.RecipeRepository;
+import springbootApplication.repository.TimerRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RecipeService {
 
-    private final RecipeRepository recipeRepository;
+	private final RecipeRepository recipeRepository;
+	private final TimerRepository timerRepository;
 
     // 전체 레시피 조회
     public List<Recipe> getAllRecipes() {
@@ -26,7 +29,7 @@ public class RecipeService {
         return recipeRepository.findByTitleContaining(keyword);
     }
 
-    // 레시피 생성 (Recipe 객체 사용)
+    // 레시피 생성
     @Transactional
     public Recipe saveRecipe(RecipeRequestDto dto) {
         Difficulty difficulty;
@@ -41,10 +44,20 @@ public class RecipeService {
         recipe.setDifficulty(difficulty);
         recipe.setPreparationTime(dto.getPreparationTime());
 
-        return recipeRepository.save(recipe); // save() 호출
+        recipeRepository.save(recipe);
+        
+        if (dto.getTimerDurations() != null && !dto.getTimerDurations().isEmpty()) {
+            for (Integer duration : dto.getTimerDurations()) {
+                Timer timer = new Timer(duration); // 타이머 생성
+                recipe.addTimer(timer);  // 타이머를 레시피에 추가
+                timerRepository.save(timer); // 타이머 저장
+            }
+        }
+        return recipe;
+
     }
 
-    // 레시피 수정 (Recipe 객체 사용)
+    // 레시피 수정
     @Transactional
     public Recipe updateRecipe(Long id, Recipe updatedRecipe) {
         return recipeRepository.findById(id)

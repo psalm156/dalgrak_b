@@ -31,21 +31,4 @@ public class TimerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTimer);
     }
 
-    @PutMapping("/{id}")
-    @Operation(summary = "Update an existing timer")
-    public ResponseEntity<Timer> updateTimer(@PathVariable Long id, @RequestBody Timer updatedTimer) {
-        try {
-            Timer timer = timerService.updateTimer(id, updatedTimer);
-            return ResponseEntity.ok(timer);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a timer by ID")
-    public ResponseEntity<Void> deleteTimer(@PathVariable Long id) {
-        timerService.deleteTimer(id);
-        return ResponseEntity.noContent().build();
-    }
 }

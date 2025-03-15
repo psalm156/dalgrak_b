@@ -26,9 +26,14 @@ public class CommunityPostService {
         return communityPostRepository.findByPostType(type);
     }
 
-    public Optional<List<CommunityPost>> getPostsByTitle(String title) { //title로 검색
-        return Optional.ofNullable(communityPostRepository.findByTitleContaining(title));
+    public Optional<List<CommunityPost>> getPostsByTitle(String title) { 
+        List<CommunityPost> posts = communityPostRepository.findByTitleContaining(title);
+        
+        // posts가 비어있으면 Optional.empty() 반환, 아니면 Optional.of(posts) 반환
+        return Optional.ofNullable(posts.isEmpty() ? null : posts);
     }
+
+
     
     public CommunityPost createPost(CommunityPost post) { //게시물 작성
         return communityPostRepository.save(post);
@@ -47,14 +52,17 @@ public class CommunityPostService {
 
     public void deletePost(Long id, Long userId) { //게시물 삭제
         communityPostRepository.findById(id)
-                .ifPresentOrElse(post -> {
-                    if (!post.getAuthor().getUserId().equals(userId)) {
+                .ifPresent(post -> {
+                    if (post.getAuthor() == null || !post.getAuthor().getUserId().equals(userId)) {
                         throw new RuntimeException("You can only delete your own posts.");
                     }
                     communityPostRepository.delete(post);
-                }, () -> {
-                    throw new RuntimeException("Post not found");
                 });
+
+        // 게시물이 없으면 예외 처리
+        communityPostRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
     }
+
 }
 

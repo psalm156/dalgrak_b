@@ -3,9 +3,10 @@ package springbootApplication.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "community_board")
+@Table(name = "CommunityPost")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,6 +36,9 @@ public class CommunityPost {
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now(); 
     
+    @OneToMany(mappedBy = "communityPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+    
 
     @PreUpdate
     public void preUpdate() {
@@ -42,12 +46,11 @@ public class CommunityPost {
     }
     
     @Builder
-    public CommunityPost(User author, String content, String title, CommunityPostType type) {
+    public CommunityPost(User author, String content, String title, CommunityPostType postType) {
         this.author = author;
         this.content = content;
         this.title = title;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.postType = postType;
     }
 }
 

@@ -1,11 +1,15 @@
 package springbootApplication.domain;
 
 import lombok.*;
+import springbootApplication.repository.RecipeRepository;
+import springbootApplication.repository.TimerRepository;
 import jakarta.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+
 @Table(name = "timers")
 public class Timer {
 
@@ -16,20 +20,24 @@ public class Timer {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user_id;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
-    private Recipe recipe_id;
+    private Recipe recipe;
 
     @ManyToOne
-    @JoinColumn(name = "step_id")
-    private RecipeStep step_id;
+    @JoinColumn(name = "step_id", nullable = false)
+    private RecipeStep step;
     
-    @Column(nullable = false)
-    private int remainingTime;
+    @Column(name = "remaining_time", nullable = false)
+    private int duration;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TimerStatus status = TimerStatus.RUNNING;
+    
+    public Timer(Integer duration) {
+        this.duration = duration;
+    }
 }

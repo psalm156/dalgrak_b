@@ -1,14 +1,15 @@
 package springbootApplication.service;
 
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import springbootApplication.repository.UserRepository;
 import springbootApplication.domain.User;
 import springbootApplication.dto.AddUserRequest;
-
-import java.util.List;
-import java.util.Optional;
+import springbootApplication.exception.EmailAlreadyInUseException;
+import springbootApplication.exception.UserIdAlreadyInUseException;
+import springbootApplication.exception.UserNotFoundException;
 
 @Service
 public class UserService {
@@ -23,32 +24,36 @@ public class UserService {
     }
 
     // 사용자 저장 (회원가입)
+    @Transactional
     public Long save(AddUserRequest dto) {
-    	 if (userRepository.existsByEmail(dto.getEmail())) {
-             throw new RuntimeException("Email already in use"); // 이메일 중복 예외 처리
-         }
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new EmailAlreadyInUseException("Email already in use");
+        }
 
-         // 사용자 아이디 중복 확인 (userId가 중복되면 안됨)
-         if (userRepository.existsById(dto.getUserId())) {
-             throw new RuntimeException("UserId already in use"); // userId 중복 예외 처리
-         }
-         
-        return userRepository.save(User.builder()
-        		.userId(dto.getUserId()) // userId가 중복되지 않도록 확인 후 사용
+        // 사용자 아이디 중복 확인
+        if (userRepository.existsById(dto.getUserId())) {
+            throw new UserIdAlreadyInUseException("UserId already in use");
+        }
+
+        User user = User.builder()
+                .userId(dto.getUserId())
                 .email(dto.getEmail())
                 .username(dto.getName())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword())) // 비밀번호 암호화
-                .build()).getUserId();
+                .build();
+        
+        return userRepository.save(user).getUserId();
     }
 
-
     // 사용자 생성
+    @Transactional
     public User createUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword())); // 비밀번호 암호화
         return userRepository.save(user);
     }
 
     // 사용자 업데이트
+    @Transactional
     public User updateUser(Long id, User userDetails) {
         return userRepository.findById(id)
                 .map(user -> {
@@ -57,15 +62,15 @@ public class UserService {
                     user.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword())); // 비밀번호 암호화
                     return userRepository.save(user);
                 })
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
     }
 
     // 사용자 삭제
+    @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found with id: " + id);
+            throw new UserNotFoundException("User not found with id: " + id);
         }
         userRepository.deleteById(id);
     }
 }
-
