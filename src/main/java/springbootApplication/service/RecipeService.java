@@ -20,33 +20,36 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final SubscriptionRepository subscriptionRepository;
-    private final WebPushService webPushService;  // WebPushService 주입
+    private final WebPushService webPushService; 
 
 
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
-    // ID기준 특정 레시피 조회
     public Optional<Recipe> getRecipeById(Long id) {
         return recipeRepository.findById(id);
     }
 
     @Transactional
     public Recipe saveRecipe(RecipeRequestDto dto) {
+    	if (dto.getDifficulty() == null) { 
+            throw new RuntimeException("Difficulty value cannot be null");  
+        }
+
         Difficulty difficulty;
         try {
             difficulty = dto.getDifficulty();
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid difficulty value");
         }
-
+        
         Recipe recipe = new Recipe();
         recipe.setTitle(dto.getTitle());
         recipe.setDifficulty(difficulty);
         recipe.setPreparationTime(dto.getPreparationTime());
 
-        return recipeRepository.save(recipe); // save() 호출
+        return recipeRepository.save(recipe); 
     }
 
     @Transactional
@@ -81,7 +84,7 @@ public class RecipeService {
         return recipeRepository.findByDifficulty(difficulty);
     }
 
-    //준비 시간별 레시피 검색 
+    
     public List<Recipe> findRecipesByPreparationTime(int preparationTime) {
         return recipeRepository.findByPreparationTime(preparationTime);
     }

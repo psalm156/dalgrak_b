@@ -18,7 +18,7 @@ public class CommunityPost {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // user_id는 User 엔티티와 연관되어야 하므로 User 타입으로 수정
+    private User user; 
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -27,17 +27,14 @@ public class CommunityPost {
     private String title;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now(); // LocalDateTime을 사용하여 시간 저장
-
+    private LocalDateTime createdAt = LocalDateTime.now();
+    
     @Column(nullable = false)
-    private LocalDateTime updatedAt = LocalDateTime.now(); // LocalDateTime을 사용하여 시간 저장
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @Column(name = "board_type", nullable = false)
-    private String boardType; // boardType 필드 추가
+    private String boardType; 
 
-    // 기본 생성자는 Lombok의 @NoArgsConstructor 애너테이션으로 자동 생성됨
-
-    // Builder 패턴을 사용하려면 생성자를 명시적으로 추가
     @Builder
     public CommunityPost(User user, String content, String title) {
         this.user = user;

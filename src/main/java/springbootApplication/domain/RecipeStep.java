@@ -1,6 +1,6 @@
 package springbootApplication.domain;
 
-import jakarta.persistence.*;  // JPA 애너테이션을 사용하기 위한 import
+import jakarta.persistence.*; 
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +25,6 @@ public class RecipeStep {
     private String instruction;
 
     @Column(nullable = true)
-    private Integer estimatedTime; // 분 단위
+    private Integer estimatedTime;
 
-    // Getter, Setter, Constructor 등이 필요하면 추가
 }

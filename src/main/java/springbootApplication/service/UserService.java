@@ -22,7 +22,7 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    // 사용자 저장 (회원가입)
+   
     public Long save(AddUserRequest dto) {
         return userRepository.save(User.builder()
                 .email(dto.getEmail())
@@ -30,35 +30,39 @@ public class UserService {
                 .build()).getId();
     }
 
-    // 모든 사용자 조회
+    
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // 특정 사용자 조회
+   
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-    // 사용자 생성
+    
     public User createUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword())); // 비밀번호 암호화
         return userRepository.save(user);
     }
 
-    // 사용자 업데이트
-    public User updateUser(Long id, User userDetails) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setUsername(userDetails.getUsername());
-                    user.setEmail(userDetails.getEmail());
-                    user.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword())); // 비밀번호 암호화
-                    return userRepository.save(user);
-                })
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+   
+    public User updateUser(Long id, User updatedDetails) {
+        Optional<User> existingUserOpt = userRepository.findById(id);
+        if (!existingUserOpt.isPresent()) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+
+        User existingUser = existingUserOpt.get();
+       
+        existingUser.setUsername(updatedDetails.getUsername());  
+        existingUser.setEmail(updatedDetails.getEmail());        
+        existingUser.setPassword(bCryptPasswordEncoder.encode(updatedDetails.getPassword())); 
+        
+        return userRepository.save(existingUser);
     }
 
-    // 사용자 삭제
+    
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("User not found with id: " + id);

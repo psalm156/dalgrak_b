@@ -46,7 +46,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email; // username 대신 email을 로그인 ID로 사용
+        return this.email; 
     }
 
     @Override
@@ -69,7 +69,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    // 비밀번호 암호화 로직 (Setter와 별도 구현)
     public void setPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(password);
     }

@@ -1,15 +1,22 @@
 package springbootApplication.domain;
 
-import jakarta.persistence.*; // JPA 관련 애너테이션 (Entity, Table, Column 등)
-import java.util.List; // List 인터페이스
-import java.util.ArrayList; // ArrayList 사용
+import jakarta.persistence.*; 
+import java.util.List;
+import java.util.ArrayList;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor 
+@AllArgsConstructor 
+@Builder 
 @Table(name = "recipes")
 public class Recipe {
 

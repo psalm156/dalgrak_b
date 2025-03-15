@@ -1,6 +1,6 @@
 package springbootApplication.service;
 
-import springbootApplication.domain.CommunityPost; // 적절한 import 경로 수정 필요
+import springbootApplication.domain.CommunityPost; 
 import springbootApplication.repository.CommunityPostRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class CommunityPostService {
         return communityPostRepository.findAll();
     }
 
-    public Optional<CommunityPost> getPostById(Long id) { // id 타입을 Long으로 수정
+    public Optional<CommunityPost> getPostById(Long id) { 
         return communityPostRepository.findById(id);
     }
 
@@ -28,7 +28,7 @@ public class CommunityPostService {
         return communityPostRepository.save(post);
     }
 
-    public CommunityPost updatePost(Long id, CommunityPost updatedPost) { // id 타입을 Long으로 수정
+    public CommunityPost updatePost(Long id, CommunityPost updatedPost) { 
         return communityPostRepository.findById(id)
                 .map(post -> {
                     post.setContent(updatedPost.getContent());
