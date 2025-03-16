@@ -27,7 +27,7 @@ public class WebPushService {
     }
 
 
-    private Subscription convertToWebPushSubscription(springbootApplication.domain.Subscription customSubscription) {
+    Subscription convertToWebPushSubscription(springbootApplication.domain.Subscription customSubscription) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonString = objectMapper.writeValueAsString(customSubscription);

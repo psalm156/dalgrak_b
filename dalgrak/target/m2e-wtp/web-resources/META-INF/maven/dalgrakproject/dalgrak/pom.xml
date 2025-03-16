@@ -54,6 +54,7 @@
         </exclusion>
     </exclusions>
 </dependency>
+
 <!--  Spring WebSocket  -->
 <dependency>
 <groupId>org.springframework.boot</groupId>
