@@ -28,5 +28,43 @@ public class Favorite {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt = new Date();
+
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+  
+    public User getUser() {
+        return user;
+    }
+
+    @Embeddable
+    public static class FavoriteId implements Serializable {
+
+        @Column(name = "user_id")
+        private Long userId;
+
+        @Column(name = "recipe_id")
+        private Long recipeId;
+
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            FavoriteId that = (FavoriteId) o;
+            return userId.equals(that.userId) && recipeId.equals(that.recipeId);
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * userId.hashCode() + recipeId.hashCode();
+            
+        }
+    }
 }
 

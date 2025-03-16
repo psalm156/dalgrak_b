@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+file:
+  path: "/uploads/"
+
+vapid:
+  publicKey: "BOG6hM6..." 
+  privateKey: "hJL3xLQ..."  
+  subject: "mailto:your-email@example.com"

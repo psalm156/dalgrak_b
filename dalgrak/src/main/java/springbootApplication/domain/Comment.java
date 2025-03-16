@@ -1,5 +1,6 @@
 package springbootApplication.domain;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +14,29 @@ import lombok.Setter;
 
 public class Comment {
     
+=======
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+public class Comment {
+
+>>>>>>> 21cbf23b6f142e5adf336968eb4f4d307e74f9f8
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+<<<<<<< HEAD
     @Column(nullable = false, length = 500)
     private String content;
 
@@ -33,3 +53,15 @@ public class Comment {
 
 }
 
+=======
+    private Long postId;
+    private Long userId;
+    private String content;
+
+    public Comment(Long postId, Long userId, String content) {
+        this.postId = postId;
+        this.userId = userId;
+        this.content = content;
+    }
+}
+>>>>>>> 21cbf23b6f142e5adf336968eb4f4d307e74f9f8
