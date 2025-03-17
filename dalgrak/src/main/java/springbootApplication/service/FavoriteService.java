@@ -29,8 +29,8 @@ public class FavoriteService {
         return favoriteRepository.findAll();
     }
 
-    public Optional<Favorite> getFavoriteByUser_IdAndRecipe_Id(Long userId, Long recipeId) {
-        return favoriteRepository.findByUser_IdAndRecipe_Id(userId, recipeId);
+    public Optional<Favorite> getFavoriteByUser_IdAndRecipeId(Long userId, Long recipeId) {
+        return favoriteRepository.findByUserIdAndRecipeId(userId, recipeId);
     }
 
     @Transactional

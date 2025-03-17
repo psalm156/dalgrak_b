@@ -4,12 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springbootApplication.domain.Recipe;
+import springbootApplication.domain.Timer;
 import springbootApplication.dto.RecipeRequestDto;
 import springbootApplication.domain.Difficulty;
 import springbootApplication.repository.RecipeRepository;
+<<<<<<< HEAD
+import springbootApplication.repository.TimerRepository;
+=======
 import springbootApplication.repository.SubscriptionRepository;
 import springbootApplication.domain.Subscription;
 import springbootApplication.service.WebPushService;
+>>>>>>> 21cbf23b6f142e5adf336968eb4f4d307e74f9f8
 
 import java.util.List;
 import java.util.Optional;
@@ -18,19 +23,39 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RecipeService {
 
+
+	private final RecipeRepository recipeRepository;
+	private final TimerRepository timerRepository;
     private final RecipeRepository recipeRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final WebPushService webPushService; 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7c7b34bd84b35458d4e52b02a4d76aab084129a6
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
+<<<<<<< HEAD
+=======
+
+    // ID기준 특정 레시피 조회
+>>>>>>> 7c7b34bd84b35458d4e52b02a4d76aab084129a6
     public Optional<Recipe> getRecipeById(Long id) {
         return recipeRepository.findById(id);
     }
 
+<<<<<<< HEAD
+=======
+    public List<Recipe> findRecipesByKeyword(String keyword) {
+        return recipeRepository.findByTitleContaining(keyword);
+    }
+
+
+    // 레시피 생성 (Recipe 객체 사용)
+>>>>>>> 7c7b34bd84b35458d4e52b02a4d76aab084129a6
     @Transactional
     public Recipe saveRecipe(RecipeRequestDto dto) {
     	if (dto.getDifficulty() == null) { 
@@ -49,9 +74,26 @@ public class RecipeService {
         recipe.setDifficulty(difficulty);
         recipe.setPreparationTime(dto.getPreparationTime());
 
+<<<<<<< HEAD
         return recipeRepository.save(recipe); 
     }
 
+=======
+        recipeRepository.save(recipe);
+        
+        if (dto.getTimerDurations() != null && !dto.getTimerDurations().isEmpty()) {
+            for (Integer duration : dto.getTimerDurations()) {
+                Timer timer = new Timer(duration); // 타이머 생성
+                recipe.addTimer(timer);  // 타이머를 레시피에 추가
+                timerRepository.save(timer); // 타이머 저장
+            }
+        }
+        return recipe;
+
+    }
+
+    // 레시피 수정 (Recipe 객체 사용)
+>>>>>>> 7c7b34bd84b35458d4e52b02a4d76aab084129a6
     @Transactional
     public Recipe updateRecipe(Long id, Recipe updatedRecipe) {
         return recipeRepository.findById(id)
@@ -87,5 +129,37 @@ public class RecipeService {
     
     public List<Recipe> findRecipesByPreparationTime(int preparationTime) {
         return recipeRepository.findByPreparationTime(preparationTime);
+<<<<<<< HEAD
+=======
+
+    public List<Recipe> filterRecipes(Optional<String> category, Optional<Difficulty> difficulty, Optional<Integer> preparationTime) {
+        if (category.isPresent() && difficulty.isPresent() && preparationTime.isPresent()) {
+            // 모든 필터가 있을 때
+            return recipeRepository.findByCategoryAndDifficultyAndPreparationTime(
+                    category.get(), difficulty.get(), preparationTime.get());
+        } else if (category.isPresent() && difficulty.isPresent()) {
+            // category와 difficulty만 있을 때
+            return recipeRepository.findByCategoryAndDifficulty(category.get(), difficulty.get());
+        } else if (category.isPresent() && preparationTime.isPresent()) {
+            // category와 preparationTime만 있을 때
+            return recipeRepository.findByCategoryAndPreparationTime(category.get(), preparationTime.get());
+        } else if (difficulty.isPresent() && preparationTime.isPresent()) {
+            // difficulty와 preparationTime만 있을 때
+            return recipeRepository.findByDifficultyAndPreparationTime(difficulty.get(), preparationTime.get());
+        } else if (category.isPresent()) {
+            // category만 있을 때
+            return recipeRepository.findByCategory(category.get());
+        } else if (difficulty.isPresent()) {
+            // difficulty만 있을 때
+            return recipeRepository.findByDifficulty(difficulty.get());
+        } else if (preparationTime.isPresent()) {
+            // preparationTime만 있을 때
+            return recipeRepository.findByPreparationTime(preparationTime.get());
+        } else {
+            // 모든 필터가 없을 때 (모든 레시피 반환)
+            return recipeRepository.findAll();
+        }
+
+>>>>>>> 7c7b34bd84b35458d4e52b02a4d76aab084129a6
     }
 }

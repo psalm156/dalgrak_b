@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "favorites")
 public class Favorite {
@@ -16,14 +19,16 @@ public class Favorite {
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User userId;
 
     @ManyToOne
     @MapsId("recipeId")
     @JoinColumn(name = "recipe_id", nullable = false)
-    private Recipe recipe;
+    private Recipe recipeId;
 
     @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 

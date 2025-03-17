@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -38,11 +39,14 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+=======
+>>>>>>> 7c7b34bd84b35458d4e52b02a4d76aab084129a6
 	<classpathentry kind="src" path="target/generated-sources/annotations">
 		<attributes>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="src" output="target/test-classes" path="target/generated-test-sources/test-annotations">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -50,4 +54,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
+=======
+	<classpathentry kind="output" path="bin"/>
+>>>>>>> 7c7b34bd84b35458d4e52b02a4d76aab084129a6
 </classpath>

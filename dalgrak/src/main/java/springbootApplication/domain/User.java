@@ -14,7 +14,7 @@ import java.util.Collections;
 @Table(name = "users")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
@@ -32,6 +32,12 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
+<<<<<<< HEAD
+=======
+    
+    @Column(name="phonenumber", unique = true, length=20)
+    private String phoneNumber;
+>>>>>>> 7c7b34bd84b35458d4e52b02a4d76aab084129a6
 
     // 권한 반환 (ROLE_USER)
     @Override

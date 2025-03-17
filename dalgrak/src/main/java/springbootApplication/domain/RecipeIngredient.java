@@ -1,5 +1,7 @@
 package springbootApplication.domain;
 
+import springbootApplication.repository.IngredientRepository;
+import jakarta.persistence.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,28 +9,36 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+
 @Getter
 @Setter
 @Entity
 @Table(name = "recipe_ingredients")
-@IdClass(RecipeIngredient.RecipeIngredientId.class)  // @IdClass로 복합 키를 정의
 public class RecipeIngredient {
 
-    @Id
-    @GeneratedValue(strategy =GenerationType.IDENTITY)
-    private Long Id;
+    @EmbeddedId
+    private RecipeIngredientId id;
 
     @ManyToOne
-    @JoinColumn(name = "recipe_id", updatable = false)
+    @MapsId("recipeId")
+    @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    @JoinColumn(name = "ingredient_id", insertable = false, updatable = false)
-    private String ingredient;
+    @ManyToOne
+    @MapsId("ingredientId")
+    @JoinColumn(name = "ingredient_id", nullable = false)
+    private Ingredient ingredient;
 
     @Column(nullable = false, length = 50)
     private String quantity;
 
+    
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
+<<<<<<< HEAD
 
     public static class RecipeIngredientId implements Serializable {
         
@@ -49,7 +59,14 @@ public class RecipeIngredient {
             return Objects.hash(recipeId, ingredientId);
         }
 
+=======
+    public void setIngredient(String name) {
+        this.ingredient = ingredientRepository.findByName(name)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found: " + name));
+>>>>>>> 7c7b34bd84b35458d4e52b02a4d76aab084129a6
     }
-}
+    
 
+
+}
 
