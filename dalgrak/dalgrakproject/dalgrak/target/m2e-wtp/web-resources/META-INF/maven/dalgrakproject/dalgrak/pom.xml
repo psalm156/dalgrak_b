@@ -22,16 +22,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <dependency>
-        	<groupId>org.springframework</groupId>
-        	<artifactId>spring-websocket</artifactId>
-        	<version>5.3.2</version>
-  		</dependency>
-  		<dependency>
-        	<groupId>org.springframework</groupId>
-        	<artifactId>spring-messaging</artifactId>
-        	<version>5.3.2</version> <!-- 최신 버전으로 수정 -->
-    	</dependency>
 
         <!-- MySQL Driver -->
         <dependency>
@@ -91,7 +81,7 @@
        		<plugin>
            		<groupId>org.apache.maven.plugins</groupId>
          	    <artifactId>maven-resources-plugin</artifactId>
-         	    <version>3.3.1</version>
+         	    <version>3.3.1</version> <!-- 최신 버전으로 변경 -->
        		</plugin>
     </plugins>
     </build>

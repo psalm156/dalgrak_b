@@ -48,20 +48,7 @@ public class UserController {
         return ResponseEntity.ok(createdUser);
     }
 
-    // 모든 유저 조회
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
 
-    // 특정 유저 조회
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
 
     // 유저 정보 수정
     @PutMapping("/{id}")

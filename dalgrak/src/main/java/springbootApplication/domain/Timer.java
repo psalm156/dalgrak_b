@@ -16,15 +16,15 @@ public class Timer {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User user_id;
 
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
-    private Recipe recipe;
+    private Recipe recipe_id;
 
     @ManyToOne
     @JoinColumn(name = "step_id")
-    private RecipeStep step;
+    private RecipeStep step_id;
     
     @Column(nullable = false)
     private int remainingTime;

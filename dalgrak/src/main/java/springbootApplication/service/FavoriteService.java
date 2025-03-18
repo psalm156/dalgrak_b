@@ -37,6 +37,7 @@ public class FavoriteService {
     public Favorite addFavorite(Favorite favorite) {
         Favorite savedFavorite = favoriteRepository.save(favorite);
 
+        // 즐겨찾기 추가 시, 해당 레시피에 구독한 사용자들에게 알림 전송
         List<Subscription> subscribers = subscriptionRepository.findByRecipeId(favorite.getRecipe().getId());
         for (Subscription subscriber : subscribers) {
             String message = favorite.getUser().getUsername() + "님이 즐겨찾기에 추가했습니다.";

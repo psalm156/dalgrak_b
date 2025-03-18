@@ -23,27 +23,6 @@ public class TimerController {
         this.timerService = timerService;
     }
 
-    @GetMapping
-    @Operation(summary = "Get all timers")
-    public ResponseEntity<List<Timer>> getAllTimers() {
-        List<Timer> timers = timerService.getAllTimers();
-        if (timers.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(timers);
-    }
-
-    @GetMapping("/{id}")
-    @Operation(summary = "Get a timer by ID")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Timer found"),
-        @ApiResponse(responseCode = "404", description = "Timer not found")
-    })
-    public ResponseEntity<Timer> getTimerById(@PathVariable Long id) {
-        return timerService.getTimerById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
 
     @PostMapping
     @Operation(summary = "Create a new timer")

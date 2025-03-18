@@ -29,13 +29,14 @@ public class RecipeIngredient {
     private String quantity;
 
 
-
+    // RecipeIngredientId 클래스를 내부 클래스로 정의
     public static class RecipeIngredientId implements Serializable {
         
         private Long recipeId;
         private Long ingredientId;
 
 
+        // equals()와 hashCode() 구현
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;

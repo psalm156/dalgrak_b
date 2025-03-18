@@ -1,7 +1,8 @@
 package springbootApplication.controller;
 
 import springbootApplication.domain.CommunityPost;
-import springbootApplication.service.CommunityPostService; 
+import springbootApplication.domain.CommunityPostType;
+import springbootApplication.service.CommunityPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,20 @@ public class CommunityPostController {
         return communityPostService.getAllPosts();
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get a community post by ID", description = "Retrieve a community post by its ID")
-    public ResponseEntity<CommunityPost> getPostById(@PathVariable Long id) {
-        return communityPostService.getPostById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());  // Not found 처리
+    @GetMapping("/posts")
+    public ResponseEntity<List<CommunityPost>> getPostsByType(@RequestParam CommunityPostType type) {
+        List<CommunityPost> posts = communityPostService.getPostsByType(type);
+        return ResponseEntity.ok(posts);
     }
+    
+    @GetMapping("/search")
+    @Operation(summary = "Search posts by title", description = "Retrieve community posts by title")
+    public ResponseEntity<List<CommunityPost>> getPostsByTitle(@RequestParam String title) {
+        return communityPostService.getPostsByTitle(title)
+                .map(posts -> ResponseEntity.ok(posts))
+                .orElseGet(() -> ResponseEntity.notFound().build()); 
+    }
+
 
     @PostMapping
     @Operation(summary = "Create a new community post", description = "Add a new post to the community board")
@@ -48,20 +56,27 @@ public class CommunityPostController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a community post", description = "Update an existing community post")
-    public ResponseEntity<CommunityPost> updatePost(@PathVariable Long id, @RequestBody CommunityPost updatedPost) {
+    public ResponseEntity<CommunityPost> updatePost(
+            @PathVariable Long id, 
+            @RequestBody CommunityPost updatedPost, 
+            @RequestParam Long userId) { 
+        
         try {
-            CommunityPost updated = communityPostService.updatePost(id, updatedPost);
-            return ResponseEntity.ok(updated); // 200 OK 반환
+            CommunityPost updated = communityPostService.updatePost(id, updatedPost, userId);
+            return ResponseEntity.ok(updated); 
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();  // 포스트가 없을 때 404 처리
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a community post", description = "Delete a community post by ID")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-        communityPostService.deletePost(id);
-        return ResponseEntity.noContent().build(); // 204 No Content 반환
+    public ResponseEntity<Void> deletePost(@PathVariable Long id, @RequestParam Long userId) {
+        try {
+            communityPostService.deletePost(id, userId);
+            return ResponseEntity.noContent().build(); 
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); 
+        }
     }
 }
-

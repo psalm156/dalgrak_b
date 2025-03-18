@@ -21,8 +21,8 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
-    private Long id;
+    @Column(name = "user_id", updatable = false)
+    private Long userId;
 
     @Column(name = "username", unique = true, length = 50)
     private String username;
@@ -32,6 +32,8 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
+    
+    @Column(name="phonenumber", unique = true, length=20)
 
     // 권한 반환 (ROLE_USER)
     @Override
@@ -46,7 +48,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email; 
+        return this.email; // username 대신 email을 로그인 ID로 사용
     }
 
     @Override
@@ -69,6 +71,7 @@ public class User implements UserDetails {
         return true;
     }
 
+    // 비밀번호 암호화 로직 (Setter와 별도 구현)
     public void setPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(password);
     }

@@ -11,7 +11,7 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    
+    // 특정 예외 처리 (예: 리소스를 찾지 못했을 경우)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDetails> handleResourceNotFoundException(
             ResourceNotFoundException ex, WebRequest request) {
@@ -20,6 +20,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
+    // 모든 예외 처리
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleGlobalException(
             Exception ex, WebRequest request) {

@@ -44,17 +44,10 @@
 <artifactId>spring-boot-starter-security</artifactId>
 </dependency>
 <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-test</artifactId>
-    <scope>test</scope>
-    <exclusions>
-        <exclusion>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </exclusion>
-    </exclusions>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-test</artifactId>
+<scope>test</scope>
 </dependency>
-
 <!--  Spring WebSocket  -->
 <dependency>
 <groupId>org.springframework.boot</groupId>
@@ -80,20 +73,6 @@
         <artifactId>httpclient</artifactId>
         <version>4.5.13</version> 
     </dependency>
-<dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter-api</artifactId>
-    <version>5.9.2</version>
-    <scope>test</scope>
-</dependency>
-
-<dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter-engine</artifactId>
-    <version>5.9.2</version>
-    <scope>test</scope>
-</dependency>
-
 
 
 <dependency>
@@ -118,14 +97,7 @@
 <groupId>org.apache.maven.plugins</groupId>
 <artifactId>maven-resources-plugin</artifactId>
 <version>3.3.1</version>
-</plugin>
-<plugin>
-     <groupId>org.apache.maven.plugins</groupId>
-     <artifactId>maven-surefire-plugin</artifactId>
-     <version>3.0.0-M5</version> 
-     <configuration>
-         <useJUnitPlatform>true</useJUnitPlatform>
-     </configuration>
+<!--  최신 버전으로 변경  -->
 </plugin>
 </plugins>
 </build>

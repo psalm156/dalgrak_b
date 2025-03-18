@@ -17,14 +17,6 @@ public class TimerService {
         this.timerRepository = timerRepository;
     }
 
-    public List<Timer> getAllTimers() {
-        return timerRepository.findAll();
-    }
-
-    public Optional<Timer> getTimerById(Long id) {
-        return timerRepository.findById(id);
-    }
-
     public Timer createTimer(Timer timer) {
         return timerRepository.save(timer);
     }

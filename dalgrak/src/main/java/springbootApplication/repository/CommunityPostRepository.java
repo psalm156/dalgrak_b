@@ -1,10 +1,14 @@
 package springbootApplication.repository;
 
 import springbootApplication.domain.CommunityPost;
+import springbootApplication.domain.CommunityPostType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
+
+import java.util.List;
 
 public interface CommunityPostRepository extends JpaRepository<CommunityPost, Long> {
 
-    Optional<CommunityPost> findByIdAndBoardType(Long id, String boardType); // boardType을 기준으로 조회
+	  List<CommunityPost> findByPostType(CommunityPostType postType);
+	  List<CommunityPost> findByTitleContaining(String title);
 }
