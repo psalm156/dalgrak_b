@@ -29,15 +29,14 @@ public class FavoriteService {
         return favoriteRepository.findAll();
     }
 
-    public Optional<Favorite> getFavoriteByUser_IdAndRecipeId(Long userId, Long recipeId) {
-        return favoriteRepository.findByUserIdAndRecipeId(userId, recipeId);
+    public Optional<Favorite> getFavoriteByUser_IdAndRecipe_Id(Long userId, Long recipeId) {
+        return favoriteRepository.findByUser_IdAndRecipe_Id(userId, recipeId);
     }
 
     @Transactional
     public Favorite addFavorite(Favorite favorite) {
         Favorite savedFavorite = favoriteRepository.save(favorite);
 
-        // 즐겨찾기 추가 시, 해당 레시피에 구독한 사용자들에게 알림 전송
         List<Subscription> subscribers = subscriptionRepository.findByRecipeId(favorite.getRecipe().getId());
         for (Subscription subscriber : subscribers) {
             String message = favorite.getUser().getUsername() + "님이 즐겨찾기에 추가했습니다.";

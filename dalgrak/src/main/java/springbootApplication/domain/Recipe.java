@@ -1,30 +1,36 @@
 package springbootApplication.domain;
 
-import jakarta.persistence.*;
-import java.util.List; 
+import jakarta.persistence.*; 
+import java.util.List;
 import java.util.ArrayList;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor 
+@AllArgsConstructor 
+@Builder 
 @Table(name = "recipes")
 public class Recipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "recipe_id")
-    private Long recipeId;
+    private Long id;
 
     @Column(nullable = false, length = 255)
     private String title;
     
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT")
     private String instructions;
 
-    @Column(name = "preparation_time", nullable = false)
+    @Column(nullable = false)
     private int preparationTime;
 
     @Enumerated(EnumType.STRING)
@@ -41,13 +47,5 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> ingredients = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Timer> timers = new ArrayList<>();
-
-    public void addTimer(Timer timer) {
-        this.timers.add(timer);
-        timer.setRecipe(this);
-    }
 }
 

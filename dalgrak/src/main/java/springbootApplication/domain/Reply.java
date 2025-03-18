@@ -1,40 +1,17 @@
 package springbootApplication.domain;
 
-<<<<<<< HEAD
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
-@Entity
-@Getter
-@Setter
-
-=======
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
->>>>>>> 21cbf23b6f142e5adf336968eb4f4d307e74f9f8
 public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-<<<<<<< HEAD
-    @Column(nullable = false, length = 500)
-    private String content;
-
-    @ManyToOne
-    @JoinColumn(name = "comment_id", nullable = false)  // 부모 댓글
-    private Comment parentComment;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)  // 답글 작성자
-    private User user;
-=======
     private Long commentId; 
     private Long userId; 
     private String content; 
@@ -80,5 +57,4 @@ public class Reply {
     public void setContent(String content) {
         this.content = content;
     }
->>>>>>> 21cbf23b6f142e5adf336968eb4f4d307e74f9f8
 }

@@ -3,10 +3,9 @@ package springbootApplication.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "CommunityPost")
+@Table(name = "community_board")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,12 +18,8 @@ public class CommunityPost {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User author;
+    private User user; 
 
-    @Enumerated(EnumType.STRING) 
-    @Column(nullable = false, length = 20)
-    private CommunityPostType postType;
-    
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
@@ -32,25 +27,21 @@ public class CommunityPost {
     private String title;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now(); 
+    private LocalDateTime createdAt = LocalDateTime.now();
+    
     @Column(nullable = false)
-    private LocalDateTime updatedAt = LocalDateTime.now(); 
-    
-    @OneToMany(mappedBy = "communityPost", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
-    
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-    
+    @Column(name = "board_type", nullable = false)
+    private String boardType; 
+
     @Builder
-    public CommunityPost(User author, String content, String title, CommunityPostType postType) {
-        this.author = author;
+    public CommunityPost(User user, String content, String title) {
+        this.user = user;
         this.content = content;
         this.title = title;
-        this.postType = postType;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }
 

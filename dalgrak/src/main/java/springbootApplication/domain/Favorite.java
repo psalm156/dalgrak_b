@@ -4,11 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "favorites")
 public class Favorite {
@@ -19,19 +16,18 @@ public class Favorite {
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     @ManyToOne
     @MapsId("recipeId")
     @JoinColumn(name = "recipe_id", nullable = false)
-    private Recipe recipeId;
+    private Recipe recipe;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
+    // 기본 생성자, Getter, Setter 메서드 등
 
     public Recipe getRecipe() {
         return recipe;
@@ -51,6 +47,7 @@ public class Favorite {
         @Column(name = "recipe_id")
         private Long recipeId;
 
+        // 기본 생성자, Getter, Setter 메서드
 
         @Override
         public boolean equals(Object o) {

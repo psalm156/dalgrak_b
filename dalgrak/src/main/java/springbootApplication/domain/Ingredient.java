@@ -18,7 +18,6 @@ public class Ingredient {
     @Column(nullable = false, unique = true, length = 100)
     private String name;
 
-
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> recipes = new ArrayList<>();
 

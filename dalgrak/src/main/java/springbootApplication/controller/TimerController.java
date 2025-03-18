@@ -23,6 +23,27 @@ public class TimerController {
         this.timerService = timerService;
     }
 
+    @GetMapping
+    @Operation(summary = "Get all timers")
+    public ResponseEntity<List<Timer>> getAllTimers() {
+        List<Timer> timers = timerService.getAllTimers();
+        if (timers.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(timers);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get a timer by ID")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Timer found"),
+        @ApiResponse(responseCode = "404", description = "Timer not found")
+    })
+    public ResponseEntity<Timer> getTimerById(@PathVariable Long id) {
+        return timerService.getTimerById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
     @PostMapping
     @Operation(summary = "Create a new timer")
@@ -31,4 +52,21 @@ public class TimerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTimer);
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Update an existing timer")
+    public ResponseEntity<Timer> updateTimer(@PathVariable Long id, @RequestBody Timer updatedTimer) {
+        try {
+            Timer timer = timerService.updateTimer(id, updatedTimer);
+            return ResponseEntity.ok(timer);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a timer by ID")
+    public ResponseEntity<Void> deleteTimer(@PathVariable Long id) {
+        timerService.deleteTimer(id);
+        return ResponseEntity.noContent().build();
+    }
 }
