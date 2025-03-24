@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="ChatServiceTest" project="dalgrak" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="springbootApplication.service.ChatServiceTest" time="1.421" displayname="ChatServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.ChatServiceTest]">
+    <testcase name="testSaveMessage" classname="springbootApplication.service.ChatServiceTest" time="1.421" displayname="testSaveMessage()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.ChatServiceTest]/[method:testSaveMessage()]"/>
+  </testsuite>
+</testrun>

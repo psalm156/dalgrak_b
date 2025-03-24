@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="WebPushServiceTest.sendPushNotification_ShouldSendNotificationSuccessfully" project="dalgrak" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="springbootApplication.service.WebPushServiceTest" time="1.272" displayname="WebPushServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]">
+    <testcase name="sendPushNotification_ShouldSendNotificationSuccessfully" classname="springbootApplication.service.WebPushServiceTest" time="1.272" displayname="sendPushNotification_ShouldSendNotificationSuccessfully()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]/[method:sendPushNotification_ShouldSendNotificationSuccessfully()]"/>
+  </testsuite>
+</testrun>

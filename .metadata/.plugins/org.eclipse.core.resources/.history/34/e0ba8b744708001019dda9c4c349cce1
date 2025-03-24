@@ -1,0 +1,75 @@
+package springbootApplication.service;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import springbootApplication.domain.Comment;
+import springbootApplication.domain.User;
+import springbootApplication.repository.CommentRepository;
+import springbootApplication.repository.UserRepository;
+import springbootApplication.service.CommentService;
+import springbootApplication.service.WebPushService;
+import java.util.Arrays;
+import java.util.List;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class CommentServiceTest {
+
+    @Mock
+    private CommentRepository commentRepository;
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private WebPushService webPushService;
+
+    @InjectMocks
+    private CommentService commentService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void addComment_ShouldSaveCommentAndSendNotifications() {
+        // Given
+        Long postId = 1L;
+        Long userId = 2L;
+        String content = "새로운 댓글입니다.";
+
+        Comment comment = new Comment(postId, userId, content);
+
+        User user1 = User.builder()
+                .pushNotificationEndpoint("endpoint1")
+                .pushNotificationAuth("auth1")
+                .pushNotificationP256dh("p256dh1")
+                .build();
+
+        User user2 = User.builder()
+                .pushNotificationEndpoint("endpoint2")
+                .pushNotificationAuth("auth2")
+                .pushNotificationP256dh("p256dh2")
+                .build();
+
+
+        List<User> userList = Arrays.asList(user1, user2);
+
+        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
+        when(userRepository.findAll()).thenReturn(userList);
+
+        // When
+        commentService.addComment(postId, userId, content);
+
+        // Then
+        verify(commentRepository, times(1)).save(any(Comment.class));
+        verify(webPushService, times(1)).sendPushNotification("endpoint1", content, "auth1", "p256dh1");
+        verify(webPushService, times(1)).sendPushNotification("endpoint2", content, "auth2", "p256dh2");
+    }
+}

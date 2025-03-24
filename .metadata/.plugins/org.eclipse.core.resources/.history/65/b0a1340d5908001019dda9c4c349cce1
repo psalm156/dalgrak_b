@@ -1,0 +1,51 @@
+package springbootApplication.service;
+
+import java.io.IOException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CustomPushService {
+
+    private String publicKey;
+    private String privateKey;
+    private String subject;
+
+    public CustomPushService(String publicKey, String privateKey, String subject) {
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.subject = subject;
+    }
+
+    public HttpResponse send(String endpoint, String message, String auth, String p256dh) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();  // HttpClient 생성
+        HttpPost httpPost = new HttpPost(endpoint);  // HttpPost 객체 생성
+        String jsonBody = "{\"message\":\"" + message + "\",\"auth\":\"" + auth + "\",\"p256dh\":\"" + p256dh + "\"}";
+        
+        try {
+            StringEntity entity = new StringEntity(jsonBody);  // Request Body 설정
+            httpPost.setEntity(entity);
+            httpPost.setHeader("Content-Type", "application/json");  // Header 설정
+
+            // 실제로 execute()가 호출되는 부분
+            HttpResponse response = httpClient.execute(httpPost);
+
+            return response;  // 응답 반환
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                httpClient.close();  // HttpClient 리소스 정리
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}

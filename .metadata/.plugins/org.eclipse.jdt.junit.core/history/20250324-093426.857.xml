@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="CommentServiceTest" project="dalgrak" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="springbootApplication.service.CommentServiceTest" time="1.41" displayname="CommentServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.CommentServiceTest]">
+    <testcase name="addComment_ShouldSaveCommentAndSendNotifications" classname="springbootApplication.service.CommentServiceTest" time="1.41" displayname="addComment_ShouldSaveCommentAndSendNotifications()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.CommentServiceTest]/[method:addComment_ShouldSaveCommentAndSendNotifications()]"/>
+  </testsuite>
+</testrun>

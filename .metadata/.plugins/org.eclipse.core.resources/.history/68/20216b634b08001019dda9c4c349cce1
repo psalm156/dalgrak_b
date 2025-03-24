@@ -1,0 +1,26 @@
+package springbootApplication.service;
+
+import org.apache.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+
+import javax.management.Notification;
+
+public class PushService {
+    private final String publicKey;
+    private final String privateKey;
+    private final String subject;
+
+    public PushService(String publicKey, String privateKey, String subject) {
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.subject = subject;
+    }
+
+    // 실제로 푸시 알림을 보내는 메서드
+    public HttpResponse send(Notification notification) {
+        // 푸시 알림 전송 로직 (실제 HTTP 요청 등)
+        // 예시로 응답 코드 201을 반환하는 HttpResponse를 만들어 반환
+        HttpResponse response = ... // HttpResponse 생성 코드
+        return response;
+    }
+}

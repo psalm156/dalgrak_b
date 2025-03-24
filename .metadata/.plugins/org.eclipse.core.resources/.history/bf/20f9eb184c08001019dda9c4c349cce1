@@ -1,0 +1,54 @@
+package springbootApplication.service;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import nl.martijndwars.webpush.Notification;
+import nl.martijndwars.webpush.PushService;
+import org.apache.http.HttpResponse;
+import static org.mockito.Mockito.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+class WebPushServiceTest {
+
+    @Mock
+    private PushService mockPushService;  // PushService를 mock 처리
+
+    @Mock
+    private HttpResponse mockHttpResponse;  // HttpResponse를 mock 처리
+
+    @InjectMocks
+    private WebPushService webPushService;
+
+    private String endpoint = "endpoint";
+    private String message = "Test message";
+    private String auth = "auth";
+    private String p256dh = "p256dh";
+
+    @BeforeEach
+    void setUp() {
+        // WebPushService는 mock에서 제공할 필요가 없으므로 기본 생성자 사용
+    }
+
+    @Test
+    void sendPushNotification_ShouldSendNotificationSuccessfully() throws Exception {
+        // Given
+        Notification notification = new Notification(endpoint, auth, p256dh, message);
+
+        // mockHttpResponse가 성공적인 응답(201)을 반환하도록 설정
+        when(mockHttpResponse.getStatusLine().getStatusCode()).thenReturn(201);
+        when(mockPushService.send(notification)).thenReturn(mockHttpResponse);
+
+        // When
+        webPushService.sendPushNotification(endpoint, message, auth, p256dh);
+
+        // Then
+        verify(mockPushService, times(1)).send(notification);  // send 메서드가 한 번 호출되었는지 확인
+        verify(mockHttpResponse, times(1)).getStatusLine();  // getStatusLine이 한 번 호출되었는지 확인
+    }
+}
