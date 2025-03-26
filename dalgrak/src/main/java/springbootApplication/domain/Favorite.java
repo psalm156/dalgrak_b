@@ -9,7 +9,6 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-
 @Table(name = "favorites")
 public class Favorite {
 
@@ -20,6 +19,7 @@ public class Favorite {
     @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
     private User userId;
+
 
     @ManyToOne
     @MapsId("recipeId")

@@ -8,6 +8,7 @@ import springbootApplication.domain.Comment;
 import springbootApplication.repository.CommentRepository;
 import springbootApplication.repository.UserRepository;
 import springbootApplication.service.WebPushService;
+import springbootApplication.domain.User;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +42,26 @@ public class CommentService {
         Comment comment = new Comment(postId, userId, content);
         commentRepository.save(comment);
 
+   }
+}
+
+        // 댓글 추가 후, 모든 사용자에게 알림 전송
+        sendPushNotificationToAllUsers(content);
+    }
+
+    // 댓글 달리면 알림을 모든 사용자에게 보내는 메소드
+    private void sendPushNotificationToAllUsers(String message) {
+        List<User> allUsers = userRepository.findAll();  // 모든 사용자 조회
+        
+        for (User user : allUsers) {
+            // 각 사용자의 푸시 알림 정보를 얻어야 함
+            String endpoint = user.getPushNotificationEndpoint();  // 실제 endpoint를 가져오는 메소드
+            String auth = user.getPushNotificationAuth();  // 실제 auth를 가져오는 메소드
+            String p256dh = user.getPushNotificationP256dh();  // 실제 p256dh를 가져오는 메소드
+
+            // 알림 전송
+            webPushService.sendPushNotification(endpoint, message, auth, p256dh);
+        }
     }
 }
+

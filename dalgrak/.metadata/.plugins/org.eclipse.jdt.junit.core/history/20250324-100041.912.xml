@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="WebPushServiceTest" project="dalgrak" tests="1" started="1" failures="0" errors="1" ignored="0">
+  <testsuite name="springbootApplication.service.WebPushServiceTest" time="0.966" displayname="WebPushServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]">
+    <testcase name="sendPushNotification_ShouldSendNotificationSuccessfully" classname="springbootApplication.service.WebPushServiceTest" time="0.966" displayname="sendPushNotification_ShouldSendNotificationSuccessfully()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]/[method:sendPushNotification_ShouldSendNotificationSuccessfully()]">
+      <error>org.mockito.exceptions.base.MockitoException: 
+Mockito cannot mock this class: class nl.martijndwars.webpush.PushService.
+
+If you're not sure why you're getting this error, please open an issue on GitHub.
+
+
+Java               : 21
+JVM vendor name    : Eclipse Adoptium
+JVM vendor version : 21.0.5+11-LTS
+JVM name           : OpenJDK 64-Bit Server VM
+JVM version        : 21.0.5+11-LTS
+JVM info           : mixed mode, sharing
+OS name            : Windows 11
+OS version         : 10.0
+
+
+You are seeing this disclaimer because Mockito is configured to create inlined mocks.
+You can learn about inline mocks and their limitations under item #39 of the Mockito class javadoc.
+
+Underlying exception : org.mockito.exceptions.base.MockitoException: Could not modify all classes [class nl.martijndwars.webpush.PushService, class java.lang.Object, class nl.martijndwars.webpush.AbstractPushService]&#13;
+	at org.mockito.junit.jupiter.MockitoExtension.beforeEach(MockitoExtension.java:160)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	Suppressed: java.lang.NullPointerException: Cannot invoke "java.util.Set.forEach(java.util.function.Consumer)" because the return value of "org.junit.jupiter.api.extension.ExtensionContext$Store.remove(Object, java.lang.Class)" is null&#13;
+		at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:194)&#13;
+		... 2 more&#13;
+Caused by: org.mockito.exceptions.base.MockitoException: Could not modify all classes [class nl.martijndwars.webpush.PushService, class java.lang.Object, class nl.martijndwars.webpush.AbstractPushService]&#13;
+	at net.bytebuddy.TypeCache.findOrInsert(TypeCache.java:168)&#13;
+	at net.bytebuddy.TypeCache$WithInlineExpunction.findOrInsert(TypeCache.java:399)&#13;
+	at net.bytebuddy.TypeCache.findOrInsert(TypeCache.java:190)&#13;
+	at net.bytebuddy.TypeCache$WithInlineExpunction.findOrInsert(TypeCache.java:410)&#13;
+	... 3 more&#13;
+Caused by: java.lang.IllegalStateException: 
+Byte Buddy could not instrument all classes within the mock's type hierarchy
+
+This problem should never occur for javac-compiled classes. This problem has been observed for classes that are:
+ - Compiled by older versions of scalac
+ - Classes that are part of the Android distribution&#13;
+	at org.mockito.internal.creation.bytebuddy.InlineBytecodeGenerator.triggerRetransformation(InlineBytecodeGenerator.java:289)&#13;
+	at org.mockito.internal.creation.bytebuddy.InlineBytecodeGenerator.mockClass(InlineBytecodeGenerator.java:218)&#13;
+	at org.mockito.internal.creation.bytebuddy.TypeCachingBytecodeGenerator.lambda$mockClass$0(TypeCachingBytecodeGenerator.java:78)&#13;
+	at net.bytebuddy.TypeCache.findOrInsert(TypeCache.java:168)&#13;
+	at net.bytebuddy.TypeCache$WithInlineExpunction.findOrInsert(TypeCache.java:399)&#13;
+	at net.bytebuddy.TypeCache.findOrInsert(TypeCache.java:190)&#13;
+	at net.bytebuddy.TypeCache$WithInlineExpunction.findOrInsert(TypeCache.java:410)&#13;
+	at org.mockito.internal.creation.bytebuddy.TypeCachingBytecodeGenerator.mockClass(TypeCachingBytecodeGenerator.java:75)&#13;
+	at org.mockito.internal.creation.bytebuddy.InlineDelegateByteBuddyMockMaker.createMockType(InlineDelegateByteBuddyMockMaker.java:406)&#13;
+	at org.mockito.internal.creation.bytebuddy.InlineDelegateByteBuddyMockMaker.doCreateMock(InlineDelegateByteBuddyMockMaker.java:365)&#13;
+	at org.mockito.internal.creation.bytebuddy.InlineDelegateByteBuddyMockMaker.createMock(InlineDelegateByteBuddyMockMaker.java:344)&#13;
+	at org.mockito.internal.creation.bytebuddy.InlineByteBuddyMockMaker.createMock(InlineByteBuddyMockMaker.java:56)&#13;
+	at org.mockito.internal.util.MockUtil.createMock(MockUtil.java:99)&#13;
+	at org.mockito.internal.MockitoCore.mock(MockitoCore.java:84)&#13;
+	at org.mockito.Mockito.mock(Mockito.java:2185)&#13;
+	at org.mockito.internal.configuration.MockAnnotationProcessor.processAnnotationForMock(MockAnnotationProcessor.java:79)&#13;
+	at org.mockito.internal.configuration.MockAnnotationProcessor.process(MockAnnotationProcessor.java:28)&#13;
+	at org.mockito.internal.configuration.MockAnnotationProcessor.process(MockAnnotationProcessor.java:25)&#13;
+	at org.mockito.internal.configuration.IndependentAnnotationEngine.createMockFor(IndependentAnnotationEngine.java:44)&#13;
+	at org.mockito.internal.configuration.IndependentAnnotationEngine.process(IndependentAnnotationEngine.java:72)&#13;
+	at org.mockito.internal.configuration.InjectingAnnotationEngine.processIndependentAnnotations(InjectingAnnotationEngine.java:62)&#13;
+	at org.mockito.internal.configuration.InjectingAnnotationEngine.process(InjectingAnnotationEngine.java:47)&#13;
+	at org.mockito.MockitoAnnotations.openMocks(MockitoAnnotations.java:81)&#13;
+	at org.mockito.internal.framework.DefaultMockitoSession.&lt;init&gt;(DefaultMockitoSession.java:43)&#13;
+	at org.mockito.internal.session.DefaultMockitoSessionBuilder.startMocking(DefaultMockitoSessionBuilder.java:83)&#13;
+	... 3 more&#13;
+Caused by: java.lang.NoClassDefFoundError: org/bouncycastle/jce/interfaces/ECPublicKey&#13;
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method)&#13;
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3578)&#13;
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2676)&#13;
+	at net.bytebuddy.description.method.MethodList$ForLoadedMethods.&lt;init&gt;(MethodList.java:152)&#13;
+	at net.bytebuddy.description.type.TypeDescription$ForLoadedType.getDeclaredMethods(TypeDescription.java:8945)&#13;
+	at net.bytebuddy.dynamic.scaffold.InstrumentedType$Factory$Default$1.represent(InstrumentedType.java:438)&#13;
+	at net.bytebuddy.ByteBuddy.redefine(ByteBuddy.java:886)&#13;
+	at net.bytebuddy.ByteBuddy.redefine(ByteBuddy.java:861)&#13;
+	at org.mockito.internal.creation.bytebuddy.InlineBytecodeGenerator.transform(InlineBytecodeGenerator.java:394)&#13;
+	at java.instrument/java.lang.instrument.ClassFileTransformer.transform(ClassFileTransformer.java:244)&#13;
+	at java.instrument/sun.instrument.TransformerManager.transform(TransformerManager.java:188)&#13;
+	at java.instrument/sun.instrument.InstrumentationImpl.transform(InstrumentationImpl.java:610)&#13;
+	at java.instrument/sun.instrument.InstrumentationImpl.retransformClasses0(Native Method)&#13;
+	at java.instrument/sun.instrument.InstrumentationImpl.retransformClasses(InstrumentationImpl.java:225)&#13;
+	at org.mockito.internal.creation.bytebuddy.InlineBytecodeGenerator.triggerRetransformation(InlineBytecodeGenerator.java:285)&#13;
+	... 27 more&#13;
+Caused by: java.lang.ClassNotFoundException: org.bouncycastle.jce.interfaces.ECPublicKey&#13;
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)&#13;
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)&#13;
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)&#13;
+	... 42 more&#13;
+&#13;
+</error>
+    </testcase>
+  </testsuite>
+</testrun>

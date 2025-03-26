@@ -1,5 +1,6 @@
 package springbootApplication.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,11 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@Builder
 public class Comment {
 
     @Id
@@ -24,9 +25,12 @@ public class Comment {
     private Long userId;
     private String content;
 
-    public Comment(Long postId, Long userId, String content) {
+
+    public Comment(Long postId, Long userId, Long id, String content) {
         this.postId = postId;
         this.userId = userId;
+        this.id = id;
         this.content = content;
     }
+ 
 }

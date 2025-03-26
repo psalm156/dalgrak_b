@@ -27,4 +27,3 @@ public class RecipeIngredientId implements Serializable {
         return Objects.hash(recipeId, ingredientId);
     }
 }
-

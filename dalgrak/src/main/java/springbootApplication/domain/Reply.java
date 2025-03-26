@@ -11,6 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -18,14 +19,12 @@ public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Long commentId; 
+    private Long commentId;
     private Long userId; 
     private String content; 
 
     
-    public Reply(Long commentId, Long userId, String content) {
+    public Reply(Long id, Long userId, String content) {
         this.commentId = commentId;
         this.userId = userId;
         this.content = content;

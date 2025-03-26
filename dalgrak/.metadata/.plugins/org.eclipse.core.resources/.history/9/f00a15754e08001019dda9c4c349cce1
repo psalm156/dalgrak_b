@@ -1,0 +1,36 @@
+package springbootApplication.service;
+
+import org.apache.http.HttpResponse;
+import nl.martijndwars.webpush.Notification;
+import nl.martijndwars.webpush.PushService as WebPushService;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class PushService {
+
+    private final String publicKey;
+    private final String privateKey;
+    private final String subject;
+
+    public PushService(String publicKey, String privateKey, String subject) {
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.subject = subject;
+    }
+
+    // 푸시 알림을 보내는 메서드
+    public HttpResponse send(Notification notification) {
+        try {
+            // PushService 객체 생성 (WebPush에서 제공하는 PushService)
+            PushService pushService = new PushService(publicKey, privateKey, subject);
+
+            // 푸시 알림 전송
+            return pushService.send(notification);  // 실제 전송
+        } catch (Exception e) {
+            System.err.println("푸시 알림 전송 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+}

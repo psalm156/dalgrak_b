@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="WebPushServiceTest" project="dalgrak" tests="2" started="2" failures="0" errors="2" ignored="0">
+  <testsuite name="springbootApplication.service.WebPushServiceTest" time="1.274" displayname="WebPushServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]">
+    <testcase name="sendPushNotification_ShouldSendNotificationSuccessfully" classname="springbootApplication.service.WebPushServiceTest" time="1.264" displayname="sendPushNotification_ShouldSendNotificationSuccessfully()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]/[method:sendPushNotification_ShouldSendNotificationSuccessfully()]">
+      <error>org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+Unnecessary stubbings detected.
+Clean &amp; maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -&gt; at springbootApplication.service.WebPushServiceTest.sendPushNotification_ShouldSendNotificationSuccessfully(WebPushServiceTest.java:39)
+  2. -&gt; at springbootApplication.service.WebPushServiceTest.sendPushNotification_ShouldSendNotificationSuccessfully(WebPushServiceTest.java:40)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.&#13;
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:197)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+&#13;
+</error>
+    </testcase>
+    <testcase name="sendPushNotification_ShouldFailIfResponseNot201" classname="springbootApplication.service.WebPushServiceTest" time="0.007" displayname="sendPushNotification_ShouldFailIfResponseNot201()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]/[method:sendPushNotification_ShouldFailIfResponseNot201()]">
+      <error>org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+Unnecessary stubbings detected.
+Clean &amp; maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -&gt; at springbootApplication.service.WebPushServiceTest.sendPushNotification_ShouldFailIfResponseNot201(WebPushServiceTest.java:59)
+  2. -&gt; at springbootApplication.service.WebPushServiceTest.sendPushNotification_ShouldFailIfResponseNot201(WebPushServiceTest.java:60)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.&#13;
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:197)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+&#13;
+</error>
+    </testcase>
+  </testsuite>
+</testrun>

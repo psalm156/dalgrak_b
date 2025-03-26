@@ -1,0 +1,78 @@
+package springbootApplication.service;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.apache.http.HttpResponse;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import nl.martijndwars.webpush.PushService;
+import nl.martijndwars.webpush.Notification;
+
+@ExtendWith(MockitoExtension.class)
+class WebPushServiceTest {
+
+    @Mock
+    private PushService pushService;  // PushService를 mock으로 생성
+
+    @Mock
+    private HttpResponse mockHttpResponse;  // HttpResponse를 mock으로 생성
+
+    @InjectMocks
+    private WebPushService webPushService;  // 테스트하려는 실제 클래스
+
+    private String endpoint;
+    private String message;
+    private String auth;
+    private String p256dh;
+
+    @BeforeEach
+    void setUp() {
+        // 테스트에 필요한 기본 데이터 설정
+        endpoint = "https://example.com/endpoint";
+        message = "푸시 알림 메시지";
+        auth = "authValue";
+        p256dh = "p256dhValue";
+        
+        // WebPushService의 생성자에서 필요한 VAPID 키 값을 mock로 설정
+        webPushService = new WebPushService("publicKey", "privateKey", "subject");
+    }
+
+    @Test
+    void sendPushNotification_ShouldSendNotificationSuccessfully() throws Exception {
+        // Given
+        Notification notification = new Notification(endpoint, auth, p256dh, message);
+
+        // mockHttpResponse가 성공적인 응답(201)을 반환하도록 설정
+        when(mockHttpResponse.getStatusLine().getStatusCode()).thenReturn(201);
+        when(pushService.send(notification)).thenReturn(mockHttpResponse);
+
+        // When
+        webPushService.sendPushNotification(endpoint, message, auth, p256dh);
+
+        // Then
+        verify(pushService, times(1)).send(notification);  // send() 메서드가 한 번 호출되었는지 확인
+        assertEquals(201, mockHttpResponse.getStatusLine().getStatusCode());  // 응답 코드가 201인지 확인
+    }
+
+    @Test
+    void sendPushNotification_ShouldHandleFailureScenario() throws Exception {
+        // Given
+        Notification notification = new Notification(endpoint, auth, p256dh, message);
+
+        // mockHttpResponse가 실패 응답(500)을 반환하도록 설정
+        when(mockHttpResponse.getStatusLine().getStatusCode()).thenReturn(500);
+        when(pushService.send(notification)).thenReturn(mockHttpResponse);
+
+        // When
+        webPushService.sendPushNotification(endpoint, message, auth, p256dh);
+
+        // Then
+        verify(pushService, times(1)).send(notification);  // send() 메서드가 한 번 호출되었는지 확인
+        assertEquals(500, mockHttpResponse.getStatusLine().getStatusCode());  // 응답 코드가 500인지 확인
+    }
+}

@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\shc32\dalgrak-workspace\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3083681173.index
+3493496343.index
+1321940161.index
+3639996078.index
+3278073042.index
+1728974676.index

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="WebPushServiceTest" project="dalgrak" tests="2" started="2" failures="0" errors="2" ignored="0">
+  <testsuite name="springbootApplication.service.WebPushServiceTest" time="1.22" displayname="WebPushServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]">
+    <testcase name="sendPushNotification_ShouldSendNotificationSuccessfully" classname="springbootApplication.service.WebPushServiceTest" time="1.207" displayname="sendPushNotification_ShouldSendNotificationSuccessfully()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]/[method:sendPushNotification_ShouldSendNotificationSuccessfully()]">
+      <error>java.lang.NoClassDefFoundError: org/bouncycastle/jce/spec/ECParameterSpec&#13;
+	at nl.martijndwars.webpush.Notification.&lt;init&gt;(Notification.java:87)&#13;
+	at springbootApplication.service.WebPushService.sendPushNotification(WebPushService.java:30)&#13;
+	at springbootApplication.service.WebPushServiceTest.sendPushNotification_ShouldSendNotificationSuccessfully(WebPushServiceTest.java:48)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+Caused by: java.lang.ClassNotFoundException: org.bouncycastle.jce.spec.ECParameterSpec&#13;
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)&#13;
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)&#13;
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)&#13;
+	... 6 more&#13;
+&#13;
+</error>
+    </testcase>
+    <testcase name="sendPushNotification_ShouldFailIfResponseNot201" classname="springbootApplication.service.WebPushServiceTest" time="0.01" displayname="sendPushNotification_ShouldFailIfResponseNot201()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]/[method:sendPushNotification_ShouldFailIfResponseNot201()]">
+      <error>java.lang.NoClassDefFoundError: org/bouncycastle/jce/spec/ECParameterSpec&#13;
+	at nl.martijndwars.webpush.Notification.&lt;init&gt;(Notification.java:87)&#13;
+	at springbootApplication.service.WebPushService.sendPushNotification(WebPushService.java:30)&#13;
+	at springbootApplication.service.WebPushServiceTest.sendPushNotification_ShouldFailIfResponseNot201(WebPushServiceTest.java:70)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+Caused by: java.lang.ClassNotFoundException: org.bouncycastle.jce.spec.ECParameterSpec&#13;
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)&#13;
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)&#13;
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)&#13;
+	... 6 more&#13;
+&#13;
+</error>
+    </testcase>
+  </testsuite>
+</testrun>

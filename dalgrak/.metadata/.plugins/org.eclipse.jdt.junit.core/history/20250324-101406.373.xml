@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="WebPushServiceTest" project="dalgrak" tests="2" started="2" failures="2" errors="0" ignored="0">
+  <testsuite name="springbootApplication.service.WebPushServiceTest" time="1.329" displayname="WebPushServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]">
+    <testcase name="sendPushNotification_ShouldSendNotificationSuccessfully" classname="springbootApplication.service.WebPushServiceTest" time="1.316" displayname="sendPushNotification_ShouldSendNotificationSuccessfully()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]/[method:sendPushNotification_ShouldSendNotificationSuccessfully()]">
+      <failure>Wanted but not invoked:
+pushService.send(
+    "http://example.com/endpoint",
+    "Test Push Notification",
+    "auth",
+    "p256dh"
+);
+-&gt; at springbootApplication.service.PushService.send(PushService.java:26)
+Actually, there were zero interactions with this mock.
+&#13;
+	at springbootApplication.service.PushService.send(PushService.java:26)&#13;
+	at springbootApplication.service.WebPushServiceTest.sendPushNotification_ShouldSendNotificationSuccessfully(WebPushServiceTest.java:52)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+&#13;
+</failure>
+    </testcase>
+    <testcase name="sendPushNotification_ShouldFailIfResponseNot201" classname="springbootApplication.service.WebPushServiceTest" time="0.011" displayname="sendPushNotification_ShouldFailIfResponseNot201()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.WebPushServiceTest]/[method:sendPushNotification_ShouldFailIfResponseNot201()]">
+      <failure>Wanted but not invoked:
+pushService.send(
+    "http://example.com/endpoint",
+    "Test Push Notification",
+    "auth",
+    "p256dh"
+);
+-&gt; at springbootApplication.service.PushService.send(PushService.java:26)
+Actually, there were zero interactions with this mock.
+&#13;
+	at springbootApplication.service.PushService.send(PushService.java:26)&#13;
+	at springbootApplication.service.WebPushServiceTest.sendPushNotification_ShouldFailIfResponseNot201(WebPushServiceTest.java:74)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+&#13;
+</failure>
+    </testcase>
+  </testsuite>
+</testrun>

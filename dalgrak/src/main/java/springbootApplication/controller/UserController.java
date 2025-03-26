@@ -48,6 +48,12 @@ public class UserController {
         return ResponseEntity.ok(createdUser);
     }
 
+    // 모든 유저 조회
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
 
     // 유저 정보 수정
     @PutMapping("/{id}")

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="ScheduledTaskServiceTest" project="dalgrak" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="springbootApplication.service.ScheduledTaskServiceTest" time="1.19" displayname="ScheduledTaskServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.ScheduledTaskServiceTest]">
+    <testcase name="sendWeeklyMenuRecommendation_ShouldSendNotificationToAllUsers" classname="springbootApplication.service.ScheduledTaskServiceTest" time="1.19" displayname="sendWeeklyMenuRecommendation_ShouldSendNotificationToAllUsers()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.ScheduledTaskServiceTest]/[method:sendWeeklyMenuRecommendation_ShouldSendNotificationToAllUsers()]"/>
+  </testsuite>
+</testrun>

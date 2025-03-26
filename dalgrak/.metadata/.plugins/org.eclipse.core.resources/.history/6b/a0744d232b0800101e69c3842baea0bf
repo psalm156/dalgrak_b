@@ -1,0 +1,63 @@
+package springbootApplication.domain;
+
+<<<<<<<< HEAD:dalgrak/src/main/java/springbootApplication/domain/Reply.java
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+========
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+>>>>>>>> f876882b60a328bcf620df82a2bea48840362985:.metadata/.plugins/org.eclipse.core.resources/.history/6b/a0744d232b0800101e69c3842baea0bf
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+<<<<<<<< HEAD:dalgrak/src/main/java/springbootApplication/domain/Reply.java
+public class Reply {
+========
+@Builder
+public class Comment {
+>>>>>>>> f876882b60a328bcf620df82a2bea48840362985:.metadata/.plugins/org.eclipse.core.resources/.history/6b/a0744d232b0800101e69c3842baea0bf
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+<<<<<<<< HEAD:dalgrak/src/main/java/springbootApplication/domain/Reply.java
+    private Long commentId; 
+    private Long userId; 
+    private String content; 
+
+    
+    public Reply(Long commentId, Long userId, String content) {
+        this.commentId = commentId;
+========
+    private Long postId;
+    private Long userId;
+    private Long commentId;
+    private String content;
+    
+
+    public Comment(Long postId, Long userId, String content) {
+        this.postId = postId;
+>>>>>>>> f876882b60a328bcf620df82a2bea48840362985:.metadata/.plugins/org.eclipse.core.resources/.history/6b/a0744d232b0800101e69c3842baea0bf
+        this.userId = userId;
+        this.content = content;
+    }
+
+}

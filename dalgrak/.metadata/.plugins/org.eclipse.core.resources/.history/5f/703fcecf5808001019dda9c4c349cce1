@@ -1,0 +1,47 @@
+package springbootApplication.service;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CustomPushService {  //푸시 알림 전송을 담당하는 실제 로직을 구현한 클래스
+
+    private final String publicKey;
+    private final String privateKey;
+    private final String subject;
+
+    public CustomPushService(String publicKey, String privateKey, String subject) {
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.subject = subject;
+    }
+
+    // 푸시 알림을 보내는 메서드
+    public HttpResponse send(String endpoint, String message, String auth, String p256dh) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpPost postRequest = new HttpPost(endpoint);
+            String jsonBody = "{\"message\":\"" + message + "\",\"auth\":\"" + auth + "\",\"p256dh\":\"" + p256dh + "\"}";
+            StringEntity entity = new StringEntity(jsonBody);
+            postRequest.setEntity(entity);
+            postRequest.setHeader("Content-Type", "application/json");
+
+            HttpResponse response = httpClient.execute(postRequest);
+            if (response.getStatusLine().getStatusCode() == 201) {
+                System.out.println("푸시 알림 전송 성공: " + response.getStatusLine().getReasonPhrase());
+            } else {
+                System.out.println("푸시 알림 전송 실패: " + response.getStatusLine().getReasonPhrase());
+            }
+            return response;
+
+        } catch (Exception e) {
+            System.err.println("푸시 알림 전송 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+}

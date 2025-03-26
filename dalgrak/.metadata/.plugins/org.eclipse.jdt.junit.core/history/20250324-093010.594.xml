@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="CommentServiceTest" project="dalgrak" tests="1" started="1" failures="1" errors="0" ignored="0">
+  <testsuite name="springbootApplication.service.CommentServiceTest" time="1.432" displayname="CommentServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.CommentServiceTest]">
+    <testcase name="addComment_ShouldSaveCommentAndSendNotifications" classname="springbootApplication.service.CommentServiceTest" time="1.433" displayname="addComment_ShouldSaveCommentAndSendNotifications()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.CommentServiceTest]/[method:addComment_ShouldSaveCommentAndSendNotifications()]">
+      <failure>Wanted but not invoked:
+commentRepository.save(
+    &lt;any springbootApplication.domain.Comment&gt;
+);
+-&gt; at springbootApplication.service.CommentServiceTest.addComment_ShouldSaveCommentAndSendNotifications(CommentServiceTest.java:71)
+Actually, there were zero interactions with this mock.
+&#13;
+	at springbootApplication.service.CommentServiceTest.addComment_ShouldSaveCommentAndSendNotifications(CommentServiceTest.java:71)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+&#13;
+</failure>
+    </testcase>
+  </testsuite>
+</testrun>

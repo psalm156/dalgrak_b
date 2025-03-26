@@ -1,0 +1,52 @@
+package springbootApplication.service;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class WebPushServiceTest {
+
+    @Mock
+    private CustomPushService CustomPushService;
+
+    @InjectMocks
+    private WebPushService webPushService;
+
+    @Mock
+    private HttpResponse mockResponse;
+
+    @Mock
+    private StatusLine statusLine;
+
+    @BeforeEach
+    void setUp() {
+        when(mockResponse.getStatusLine()).thenReturn(statusLine);
+        when(statusLine.getStatusCode()).thenReturn(201);  // 성공적인 응답 코드 201
+    }
+
+    @Test
+    public void sendPushNotification_ShouldSendNotificationSuccessfully() {
+        // Given
+        String endpoint = "http://example.com/endpoint";
+        String message = "Test Push Notification";
+        String auth = "auth";
+        String p256dh = "p256dh";
+
+        // When
+        when(CustomPushService.send(any())).thenReturn(mockResponse);  // Mocking send 메서드
+
+        webPushService.sendPushNotification(endpoint, message, auth, p256dh);  // 실제 호출
+
+        // Then
+        verify(CustomPushService, times(1)).send(any());  // send 메서드가 한 번 호출되었는지 확인
+    }
+}

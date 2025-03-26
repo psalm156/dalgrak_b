@@ -32,6 +32,14 @@ public class FavoriteController {
         return ResponseEntity.ok(favorites);  // Return 200 with the favorites list
     }
 
+    @GetMapping("/{userId}/{recipeId}")
+    @Operation(summary = "Get favorite by ID", description = "Retrieve a specific favorite by user ID and recipe ID")
+    public ResponseEntity<Favorite> getFavoriteById(
+            @PathVariable Long userId, @PathVariable Long recipeId) {
+        Optional<Favorite> favorite = favoriteService.getFavoriteByUser_IdAndRecipe_Id(userId, recipeId);
+        return favorite.map(ResponseEntity::ok)  // Return 200 with the favorite if found
+                .orElseGet(() -> ResponseEntity.notFound().build());  // Return 404 if not found
+    }
 
     @PostMapping
     @Operation(summary = "Add a favorite", description = "Add a recipe to user favorites")

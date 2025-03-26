@@ -1,0 +1,120 @@
+package springbootApplication.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Arrays;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import springbootApplication.domain.Reply;
+import springbootApplication.domain.Comment;
+import springbootApplication.domain.User;
+import springbootApplication.repository.ReplyRepository;
+import springbootApplication.repository.CommentRepository;
+import springbootApplication.repository.UserRepository;
+import springbootApplication.repository.SubscriptionRepository;
+import springbootApplication.domain.Subscription;
+
+@ExtendWith(MockitoExtension.class)
+class ReplyServiceTest {
+
+    @Mock private ReplyRepository replyRepository;
+    @Mock private CommentRepository commentRepository;
+    @Mock private UserRepository userRepository;
+    @Mock private SubscriptionRepository subscriptionRepository;
+    @Mock private WebPushService webPushService;
+
+    @InjectMocks
+    private ReplyService replyService;
+
+    private User user;
+    private Comment comment;
+    private Reply reply;
+
+    @BeforeEach
+    void setUp() {
+        user = User.builder()
+                .userId(1L)
+                .username("testUser")
+                .build();
+
+        comment = Comment.builder()
+                .postId(1L)             
+                .userId(1L)           
+                .commentId(1L)          
+                .content("Test Comment") 
+                .build();
+
+        reply = Reply.builder()
+                .parentComment(comment)
+                .user(user)
+                .content("Test reply")
+                .build();
+    }
+
+    @Test
+    void testGetRepliesByCommentId() {
+        when(replyRepository.findByParentCommentId(1L)).thenReturn(Arrays.asList(reply));
+
+        List<Reply> replies = replyService.getRepliesByCommentId(1L);
+
+        assertEquals(1, replies.size());
+        assertEquals("Test reply", replies.get(0).getContent());
+
+        verify(replyRepository, times(1)).findByParentCommentId(1L);
+    }
+
+    @Test
+    void testDeleteReply_Success() {
+        when(replyRepository.findById(1L)).thenReturn(Optional.of(reply));
+
+        assertDoesNotThrow(() -> replyService.deleteReply(1L, 1L));
+
+        verify(replyRepository, times(1)).delete(reply);
+    }
+
+    @Test
+    void testDeleteReply_Failure_UnauthorizedUser() {
+        when(replyRepository.findById(1L)).thenReturn(Optional.of(reply));
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            replyService.deleteReply(1L, 2L); 
+        });
+
+        assertEquals("You can only delete your own reply!", exception.getMessage());
+
+        verify(replyRepository, never()).delete(reply);
+    }
+
+    @Test
+    void testAddReply() {
+        when(commentRepository.findById(1L)).thenReturn(Optional.of(comment));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(subscriptionRepository.findByCommentId(1L)).thenReturn(List.of());
+
+        assertDoesNotThrow(() -> replyService.addReply(1L, 1L, "New reply"));
+
+        verify(replyRepository, times(1)).save(any(Reply.class));
+    }
+
+    @Test
+    void testAddReply_WithNotification() {
+        Subscription subscription = mock(Subscription.class);
+
+        when(commentRepository.findById(1L)).thenReturn(Optional.of(comment));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(subscriptionRepository.findByCommentId(1L)).thenReturn(List.of(subscription));
+
+        replyService.addReply(1L, 1L, "Reply with notification");
+
+        verify(webPushService, times(1)).sendPushNotification(eq(subscription), anyString());
+    }
+}

@@ -4,8 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import springbootApplication.domain.Reply;
+import springbootApplication.domain.Comment;
 import springbootApplication.repository.ReplyRepository;
 import springbootApplication.repository.UserRepository;
+import springbootApplication.repository.CommentRepository;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -14,6 +17,7 @@ public class ReplyService {
     
     private final ReplyRepository replyRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final WebPushService webPushService;
 
     // 특정 댓글의 답글 가져오기
@@ -34,10 +38,36 @@ public class ReplyService {
         replyRepository.delete(reply);
     }
 
+    // 답글 추가
     @Transactional
-    public Reply addReply(Long commentId, Long userId, String content) {
+    public void addReply(Long commentId, Long userId, String content) {
+        // 답글 객체 생성
         Reply reply = new Reply(commentId, userId, content);
-        return replyRepository.save(reply);
+        replyRepository.save(reply);
 
+        // 해당 댓글의 작성자를 가져오기 (댓글 작성자에게 알림을 보냄)
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        Long commentAuthorId = comment.getUserId();  // 댓글 작성자의 userId
+
+        // 댓글 작성자에게 푸시 알림 보내기
+        sendReplyNotificationToCommentAuthor(commentAuthorId, reply);
+    }
+
+    // 댓글 작성자에게 답글 알림 보내기
+    private void sendReplyNotificationToCommentAuthor(Long commentAuthorId, Reply reply) {
+        userRepository.findById(commentAuthorId).ifPresent(user -> {
+            // 푸시 알림 정보 가져오기
+            String endpoint = user.getPushNotificationEndpoint();
+            String auth = user.getPushNotificationAuth();
+            String p256dh = user.getPushNotificationP256dh();
+
+            // 알림 메시지 작성
+            String message = "Someone replied to your comment: " + reply.getContent();
+
+            // 푸시 알림 전송
+            webPushService.sendPushNotification(endpoint, message, auth, p256dh);
+        });
     }
 }

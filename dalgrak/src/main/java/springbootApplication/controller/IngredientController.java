@@ -22,4 +22,5 @@ public class IngredientController {
     public ResponseEntity<List<Ingredient>> getAllIngredients() {
         return ResponseEntity.ok(ingredientService.getAllIngredients());
     }
+
 }

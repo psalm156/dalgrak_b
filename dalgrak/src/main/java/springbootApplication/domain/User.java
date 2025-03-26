@@ -2,6 +2,7 @@ package springbootApplication.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +27,9 @@ public class User implements UserDetails {
 
     @Column(name = "username", unique = true, length = 50)
     private String username;
+    
+    @Column(name = "user_id", unique = true, nullable = false)
+    private Long userId;
 
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
@@ -36,9 +40,8 @@ public class User implements UserDetails {
     private String pushNotificationEndpoint;
     private String pushNotificationAuth;
     private String pushNotificationP256dh;
+  
 
-    
-    // 권한 반환 (ROLE_USER)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));

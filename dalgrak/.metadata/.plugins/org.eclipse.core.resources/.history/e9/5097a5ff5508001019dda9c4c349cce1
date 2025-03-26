@@ -1,0 +1,31 @@
+package springbootApplication.service;
+
+import org.apache.http.HttpResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+@Service
+public class WebPushService {
+
+    private final String publicKey;
+    private final String privateKey;
+    private final String subject;
+    private final CustomPushService customPushService;  // CustomPushService로 변경
+
+    public WebPushService(
+            @Value("${vapid.publicKey}") String publicKey,
+            @Value("${vapid.privateKey}") String privateKey,
+            @Value("${vapid.subject}") String subject,
+            CustomPushService customPushService) {  // 의존성 주입 시 CustomPushService 사용
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.subject = subject;
+        this.customPushService = customPushService;
+    }
+
+    // 푸시 알림을 보내는 메서드
+    public void sendPushNotification(String endpoint, String message, String auth, String p256dh) {
+        HttpResponse response = customPushService.send(endpoint, message, auth, p256dh);
+        // 응답 상태 코드 체크 등 추가 로직
+    }
+}

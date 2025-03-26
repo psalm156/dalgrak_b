@@ -30,7 +30,8 @@ public class RecipeService {
 
     @Transactional
     public Recipe saveRecipe(RecipeRequestDto dto) {
-    	if (dto.getDifficulty() == null) { 
+
+       if (dto.getDifficulty() == null) { 
             throw new RuntimeException("Difficulty value cannot be null");  
         }
 
@@ -85,4 +86,5 @@ public class RecipeService {
     public List<Recipe> findRecipesByPreparationTime(int preparationTime) {
         return recipeRepository.findByPreparationTime(preparationTime);
     }
+
 }

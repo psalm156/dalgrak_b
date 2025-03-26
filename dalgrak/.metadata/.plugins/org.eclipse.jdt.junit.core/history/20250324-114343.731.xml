@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="CustomPushServiceTest" project="dalgrak" tests="3" started="3" failures="3" errors="0" ignored="0">
+  <testsuite name="springbootApplication.service.CustomPushServiceTest" time="2.485" displayname="CustomPushServiceTest" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.CustomPushServiceTest]">
+    <testcase name="testSend_SuccessfulPushNotification" classname="springbootApplication.service.CustomPushServiceTest" time="1.931" displayname="testSend_SuccessfulPushNotification()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.CustomPushServiceTest]/[method:testSend_SuccessfulPushNotification()]">
+      <failure>Wanted but not invoked:
+httpClient.execute(
+    &lt;any org.apache.http.client.methods.HttpPost&gt;
+);
+-&gt; at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:108)
+Actually, there were zero interactions with this mock.
+&#13;
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:108)&#13;
+	at springbootApplication.service.CustomPushServiceTest.testSend_SuccessfulPushNotification(CustomPushServiceTest.java:54)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+&#13;
+</failure>
+    </testcase>
+    <testcase name="testSend_ExceptionDuringRequest" classname="springbootApplication.service.CustomPushServiceTest" time="0.274" displayname="testSend_ExceptionDuringRequest()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.CustomPushServiceTest]/[method:testSend_ExceptionDuringRequest()]">
+      <failure>
+        <expected>null</expected>
+        <actual>HttpResponseProxy{HTTP/1.1 403 Forbidden [Mime-Version: 1.0, Content-Type: text/html, Content-Length: 369, Cache-Control: max-age=0, Date: Mon, 24 Mar 2025 14:26:33 GMT, Connection: close] ResponseEntityProxy{[Content-Type: text/html,Content-Length: 369,Chunked: false]}}</actual>
+        org.opentest4j.AssertionFailedError: expected: &lt;null&gt; but was: &lt;HttpResponseProxy{HTTP/1.1 403 Forbidden [Mime-Version: 1.0, Content-Type: text/html, Content-Length: 369, Cache-Control: max-age=0, Date: Mon, 24 Mar 2025 14:26:33 GMT, Connection: close] ResponseEntityProxy{[Content-Type: text/html,Content-Length: 369,Chunked: false]}}&gt;&#13;
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)&#13;
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)&#13;
+	at org.junit.jupiter.api.AssertNull.failNotNull(AssertNull.java:50)&#13;
+	at org.junit.jupiter.api.AssertNull.assertNull(AssertNull.java:35)&#13;
+	at org.junit.jupiter.api.AssertNull.assertNull(AssertNull.java:30)&#13;
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:279)&#13;
+	at springbootApplication.service.CustomPushServiceTest.testSend_ExceptionDuringRequest(CustomPushServiceTest.java:97)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+&#13;
+
+      </failure>
+    </testcase>
+    <testcase name="testSend_FailedPushNotification" classname="springbootApplication.service.CustomPushServiceTest" time="0.278" displayname="testSend_FailedPushNotification()" uniqueid="[engine:junit-jupiter]/[class:springbootApplication.service.CustomPushServiceTest]/[method:testSend_FailedPushNotification()]">
+      <failure>Wanted but not invoked:
+httpClient.execute(
+    &lt;any org.apache.http.client.methods.HttpPost&gt;
+);
+-&gt; at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:108)
+Actually, there were zero interactions with this mock.
+&#13;
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:108)&#13;
+	at springbootApplication.service.CustomPushServiceTest.testSend_FailedPushNotification(CustomPushServiceTest.java:78)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)&#13;
+&#13;
+</failure>
+    </testcase>
+  </testsuite>
+</testrun>
