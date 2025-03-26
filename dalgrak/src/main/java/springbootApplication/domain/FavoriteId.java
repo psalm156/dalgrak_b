@@ -1,11 +1,17 @@
 package springbootApplication.domain;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.*;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FavoriteId implements Serializable {
 
     @Column(name = "user_id")
@@ -19,12 +25,12 @@ public class FavoriteId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FavoriteId that = (FavoriteId) o;
-        return userId.equals(that.userId) && recipeId.equals(that.recipeId);
+        return Objects.equals(userId, that.userId) &&
+               Objects.equals(recipeId, that.recipeId);
     }
 
     @Override
     public int hashCode() {
-        return 31 * userId.hashCode() + recipeId.hashCode();
+        return Objects.hash(userId, recipeId);
     }
 }
-

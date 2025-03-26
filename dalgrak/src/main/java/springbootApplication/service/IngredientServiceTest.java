@@ -30,7 +30,7 @@ class IngredientServiceTest {
     @BeforeEach
     void setUp() {
         ingredient = new Ingredient();
-        ingredient.setId(1L);
+        ingredient.setIngredientId(1L);
         ingredient.setName("Tomato");
     }
 

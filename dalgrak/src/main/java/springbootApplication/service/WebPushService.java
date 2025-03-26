@@ -1,17 +1,11 @@
 package springbootApplication.service;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
-=======
->>>>>>> f876882b60a328bcf620df82a2bea48840362985
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-<<<<<<< HEAD
-import java.nio.charset.StandardCharsets;
 
 @Service
 public class WebPushService {
@@ -28,6 +22,7 @@ public class WebPushService {
         this.privateKey = privateKey;
         this.subject = subject;
     }
+
     // 푸시 알림을 보낼 메서드
     public void sendPushNotification(String endpoint, String message, String auth, String p256dh) {
         try {
@@ -53,4 +48,3 @@ public class WebPushService {
         }
     }
 }
-

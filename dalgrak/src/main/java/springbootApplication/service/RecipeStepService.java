@@ -31,7 +31,6 @@ public class RecipeStepService {
     public RecipeStep updateRecipeStep(Long id, RecipeStep updatedRecipeStep) {
         return recipeStepRepository.findById(id)
                 .map(recipeStep -> {
-                    recipeStep.setStepNumber(updatedRecipeStep.getStepNumber());
                     recipeStep.setInstruction(updatedRecipeStep.getInstruction());
                     recipeStep.setEstimatedTime(updatedRecipeStep.getEstimatedTime());
                     return recipeStepRepository.save(recipeStep);

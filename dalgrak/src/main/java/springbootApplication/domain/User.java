@@ -2,12 +2,14 @@ package springbootApplication.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.Builder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -22,25 +24,32 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
+    @Column(name = "user_id", updatable = false)
     private Long userId;
 
-    @Column(name = "username", unique = true, length = 50)
+    @Column(name = "username", unique = true, nullable = false, length = 50)
     private String username;
-    
-    @Column(name = "user_id", unique = true, nullable = false)
-    private Long userId;
 
-    @Column(name = "email", nullable = false, unique = true, length = 100)
+    @Column(name = "email", unique = true, nullable = false, length = 100)
     private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
-    
+
+    @Column(name = "phone_number", unique = true, nullable = false, length = 15)
+    private String phoneNumber;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
     private String pushNotificationEndpoint;
     private String pushNotificationAuth;
     private String pushNotificationP256dh;
-  
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -81,3 +90,4 @@ public class User implements UserDetails {
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 }
+	

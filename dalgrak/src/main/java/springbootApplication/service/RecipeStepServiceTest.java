@@ -30,7 +30,6 @@ class RecipeStepServiceTest {
     void setUp() {
         recipeStep = new RecipeStep();
         recipeStep.setId(1L);
-        recipeStep.setStepNumber(1);
         recipeStep.setInstruction("Chop the vegetables");
         recipeStep.setEstimatedTime(10);
     }
@@ -53,7 +52,6 @@ class RecipeStepServiceTest {
         Optional<RecipeStep> foundStep = recipeStepService.getRecipeStepById(1L);
 
         assertTrue(foundStep.isPresent());
-        assertEquals(1, foundStep.get().getStepNumber());
     }
 
     @Test
@@ -72,14 +70,12 @@ class RecipeStepServiceTest {
         RecipeStep savedStep = recipeStepService.createRecipeStep(recipeStep);
 
         assertNotNull(savedStep);
-        assertEquals(1, savedStep.getStepNumber());
         verify(recipeStepRepository, times(1)).save(recipeStep);
     }
 
     @Test
     void testUpdateRecipeStep_Success() {
         RecipeStep updatedStep = new RecipeStep();
-        updatedStep.setStepNumber(2);
         updatedStep.setInstruction("Boil water");
         updatedStep.setEstimatedTime(5);
 
@@ -88,7 +84,6 @@ class RecipeStepServiceTest {
 
         RecipeStep result = recipeStepService.updateRecipeStep(1L, updatedStep);
 
-        assertEquals(2, result.getStepNumber());
         assertEquals("Boil water", result.getInstruction());
     }
 

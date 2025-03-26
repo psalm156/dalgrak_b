@@ -12,19 +12,17 @@ public class RecipeStep {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    @Column(nullable = false)
-    private int stepNumber;
-
     @Column(nullable = false, columnDefinition = "TEXT")
     private String instruction;
 
-    @Column(nullable = true)
+    @Column(name = "estimated_time", nullable = true)
     private Integer estimatedTime;
 
 }

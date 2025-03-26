@@ -10,9 +10,8 @@ import jakarta.persistence.*;
 public class Timer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // name 속성은 제거
     private Long id;
-    
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -26,7 +25,7 @@ public class Timer {
     @JoinColumn(name = "step_id")
     private RecipeStep step;
     
-    @Column(nullable = false)
+    @Column(name = "remaining_time", nullable = false)
     private int remainingTime;
 
     @Enumerated(EnumType.STRING)

@@ -1,39 +1,25 @@
 package springbootApplication.service;
 
-<<<<<<< HEAD
-=======
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
->>>>>>> f876882b60a328bcf620df82a2bea48840362985
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-<<<<<<< HEAD
-import springbootApplication.domain.Reply;
-import springbootApplication.repository.ReplyRepository;
-=======
 import springbootApplication.domain.Comment;
 import springbootApplication.domain.Reply;
 import springbootApplication.domain.User;
 import springbootApplication.repository.CommentRepository;
 import springbootApplication.repository.ReplyRepository;
 import springbootApplication.repository.UserRepository;
-import springbootApplication.service.ReplyService;
->>>>>>> f876882b60a328bcf620df82a2bea48840362985
 import springbootApplication.service.WebPushService;
 
 import java.util.Arrays;
 import java.util.List;
-<<<<<<< HEAD
-
-import static org.mockito.Mockito.*;
-=======
 import java.util.Optional;
->>>>>>> f876882b60a328bcf620df82a2bea48840362985
 
 @ExtendWith(MockitoExtension.class)
 class ReplyServiceTest {
@@ -42,58 +28,46 @@ class ReplyServiceTest {
     private ReplyRepository replyRepository;
 
     @Mock
-<<<<<<< HEAD
-=======
     private CommentRepository commentRepository;
 
     @Mock
     private UserRepository userRepository;
 
     @Mock
->>>>>>> f876882b60a328bcf620df82a2bea48840362985
     private WebPushService webPushService;
 
     @InjectMocks
     private ReplyService replyService;
 
-<<<<<<< HEAD
-    private Long commentId;
-    private Long userId;
-    private String content;
-
-    @BeforeEach
-    void setUp() {
-        commentId = 1L;
-        userId = 1L;
-        content = "This is a test reply!";
-    }
-
-    @Test
-    void testAddReply_NoSubscriptions() {
-
-        replyService.addReply(commentId, userId, content);
-
-        verify(replyRepository, times(1)).save(any(Reply.class));
-    }
-
-=======
     private Comment comment;
     private User user;
     private Reply reply;
 
     @BeforeEach
     void setUp() {
-        comment = new Comment(1L, 2L, "This is a comment");
+        // 댓글 객체 생성
+        comment = new Comment();
+        comment.setCommentId(1L);
+        comment.setContent("This is a comment");
+        comment.setPost(2L);  // 해당 포스트 ID
+
+        // 사용자 객체 생성
         user = User.builder()
-                .id(2L)
+                .userId(2L)
                 .pushNotificationEndpoint("endpoint")
                 .pushNotificationAuth("auth")
                 .pushNotificationP256dh("p256dh")
                 .build();
-        reply = new Reply(1L, 3L, "This is a reply");
 
-        // 댓글에 사용자 정보 설정
-        comment.setUserId(2L);  // 댓글 작성자는 userId 2
+        // 댓글에 사용자 객체 설정
+        comment.setUser(user);
+
+        // 댓글에 User 객체 설정 후 Reply 객체 생성
+        reply = new Reply();
+        reply.setReplyId(1L);
+        reply.setComment(comment);  // 댓글과 연결
+        reply.setUser(user);  // 작성자 설정
+        reply.setContent("This is a reply");
     }
 
     @Test
@@ -145,8 +119,29 @@ class ReplyServiceTest {
         Long commentId = 1L;
         Long userId = 3L;
         String content = "This is a reply";
-        Reply newReply = new Reply(commentId, userId, content);
+        
+        // 댓글 객체 생성
+        Comment comment = new Comment();
+        comment.setCommentId(commentId);
+        comment.setContent("This is a comment");
+        comment.setPost(2L);
+        comment.setUser(user); // 댓글 작성자 설정
+        
+        // 사용자 객체 생성
+        User user = User.builder()
+                .userId(userId)
+                .pushNotificationEndpoint("endpoint")
+                .pushNotificationAuth("auth")
+                .pushNotificationP256dh("p256dh")
+                .build();
+        
+        // Reply 객체 생성
+        Reply newReply = new Reply();
+        newReply.setContent(content);
+        newReply.setComment(comment);  // 댓글 연결
+        newReply.setUser(user);        // 사용자 설정
 
+        // 댓글과 사용자 객체를 설정
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
         when(replyRepository.save(any(Reply.class))).thenReturn(newReply);
         when(userRepository.findById(2L)).thenReturn(Optional.of(user));  // 댓글 작성자에 해당하는 사용자
@@ -160,5 +155,5 @@ class ReplyServiceTest {
                 "endpoint", "Someone replied to your comment: This is a reply", "auth", "p256dh"
         );
     }
->>>>>>> f876882b60a328bcf620df82a2bea48840362985
+
 }

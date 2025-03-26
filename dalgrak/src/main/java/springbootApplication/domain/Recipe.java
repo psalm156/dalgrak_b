@@ -22,6 +22,7 @@ public class Recipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "recipe_id")
     private Long RecipeId;
 
     @Column(nullable = false, length = 255)
@@ -30,7 +31,7 @@ public class Recipe {
     @Column(columnDefinition = "TEXT")
     private String instructions;
 
-    @Column(nullable = false)
+    @Column(name = "preparation_time", nullable = false)
     private int preparationTime;
 
     @Enumerated(EnumType.STRING)

@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import springbootApplication.domain.Reply;
+import springbootApplication.dto.ReplyRequestDto;
 import springbootApplication.service.ReplyService;
 
 import java.util.List;
@@ -31,10 +32,10 @@ public class ReplyController {
     
     @PostMapping("/{commentId}")
     public ResponseEntity<Reply> createReply(@PathVariable Long commentId, 
-                                             @RequestParam Long userId, 
-                                             @RequestBody String content) {
-        Reply reply = replyService.addReply(commentId, userId, content);
+                                             @RequestBody ReplyRequestDto requestDto) {
+        Reply reply = replyService.addReply(commentId, requestDto.getUserId(), requestDto.getContent());
         return ResponseEntity.ok(reply);
     }
+
 }
 

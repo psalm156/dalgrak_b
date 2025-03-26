@@ -5,10 +5,12 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "community_board")
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "community_board")
 public class CommunityPost {
 
     @Id
@@ -18,7 +20,7 @@ public class CommunityPost {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; 
+    private User user;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -32,17 +34,12 @@ public class CommunityPost {
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @Column(name = "board_type", nullable = false)
-    private Enum boardType; 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "post_type", nullable = false)
+    private PostType postType;
 
-    @Builder
-    public CommunityPost(User user, String content, String title) {
-        this.user = user;
-        this.content = content;
-        this.title = title;
-        this.createdAt = LocalDateTime.now();
+    @PreUpdate
+    protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
-    }	
+    }
 }
-
-

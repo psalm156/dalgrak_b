@@ -40,8 +40,8 @@ public class FavoriteServiceTest {
         recipe.setRecipeId(1L);  // Recipe ID 설정
 
         favorite = new Favorite();
-        favorite.setUserId(user);  // User 객체 설정
-        favorite.setRecipeId(recipe);  // Recipe 객체 설정
+        favorite.setUser(user);  // User 객체 설정
+        favorite.setRecipe(recipe);  // Recipe 객체 설정
     }
 
     @Test
@@ -54,8 +54,8 @@ public class FavoriteServiceTest {
 
         // 결과 확인
         assertNotNull(savedFavorite);
-        assertEquals(favorite.getUserId().getUserId(), savedFavorite.getUserId().getUserId());  // User 객체의 ID 확인
-        assertEquals(favorite.getRecipeId().getRecipeId(), savedFavorite.getRecipeId().getRecipeId());  // Recipe 객체의 ID 확인
+        assertEquals(favorite.getUser().getUserId(), savedFavorite.getUser().getUserId());  // User 객체의 ID 확인
+        assertEquals(favorite.getRecipe().getRecipeId(), savedFavorite.getRecipe().getRecipeId());  // Recipe 객체의 ID 확인
         verify(favoriteRepository).save(any(Favorite.class));  // save() 메서드 호출 확인
     }
 
@@ -69,8 +69,8 @@ public class FavoriteServiceTest {
 
         // 결과 확인
         assertTrue(retrievedFavorite.isPresent());
-        assertEquals(favorite.getUserId().getUserId(), retrievedFavorite.get().getUserId().getUserId());  // User 객체의 ID 확인
-        assertEquals(favorite.getRecipeId().getRecipeId(), retrievedFavorite.get().getRecipeId().getRecipeId());  // Recipe 객체의 ID 확인
+        assertEquals(favorite.getUser().getUserId(), retrievedFavorite.get().getUser().getUserId());  // User 객체의 ID 확인
+        assertEquals(favorite.getRecipe().getRecipeId(), retrievedFavorite.get().getRecipe().getRecipeId());  // Recipe 객체의 ID 확인
     }
 
     @Test

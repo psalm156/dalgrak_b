@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import springbootApplication.domain.CommunityPost;
-import springbootApplication.domain.CommunityPostType;
+import springbootApplication.domain.PostType;
 import springbootApplication.domain.User;
 import springbootApplication.repository.CommunityPostRepository;
 import springbootApplication.service.CommunityPostService;
@@ -39,7 +39,7 @@ public class CommunityPostServiceTest {
         communityPost = new CommunityPost();
         communityPost.setPostId(1L);
         communityPost.setUser(author);
-        communityPost.setBoardType(CommunityPostType.FREE);
+        communityPost.setPostType(PostType.FREE);
         communityPost.setTitle("Test Post Title");
         communityPost.setContent("Test content for the community post.");
     }
@@ -48,7 +48,7 @@ public class CommunityPostServiceTest {
     @Test
     void getPostByIdAndBoardType_Success() {
         // Mocking: ID와 BoardType이 일치하는 게시물 반환
-        when(communityPostRepository.findByIdAndBoardType(1L, CommunityPostType.FREE))
+        when(communityPostRepository.findByIdAndBoardType(1L, PostType.FREE))
                 .thenReturn(Optional.of(communityPost));
 
         // 서비스 호출
@@ -57,7 +57,7 @@ public class CommunityPostServiceTest {
         // 검증
         assertTrue(result.isPresent());
         assertEquals(communityPost.getPostId(), result.get().getPostId());
-        verify(communityPostRepository).findByIdAndBoardType(1L, CommunityPostType.FREE);
+        verify(communityPostRepository).findByIdAndBoardType(1L, PostType.FREE);
     }
 
     // 존재하지 않는 boardType 요청 시 예외 발생 테스트

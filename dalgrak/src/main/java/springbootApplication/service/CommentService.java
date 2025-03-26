@@ -29,8 +29,8 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
 
-        if (!comment.getUserId().equals(userId)) {
-            throw new RuntimeException("You can only delete your own comment!");
+        if (!comment.getUser().getUserId().equals(userId)) {
+            throw new RuntimeException("타인이 작성한 댓글은 삭제할 수 없습니다!");
         }
 
         commentRepository.delete(comment);
@@ -39,15 +39,21 @@ public class CommentService {
     // 댓글 추가
     @Transactional
     public void addComment(Long postId, Long userId, String content) {
-        Comment comment = new Comment(postId, userId, content);
-        commentRepository.save(comment);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-   }
-}
+        Comment comment = Comment.builder()
+                .post(postId)
+                .user(user)
+                .content(content)
+                .build();
+
+        commentRepository.save(comment);
 
         // 댓글 추가 후, 모든 사용자에게 알림 전송
         sendPushNotificationToAllUsers(content);
     }
+
 
     // 댓글 달리면 알림을 모든 사용자에게 보내는 메소드
     private void sendPushNotificationToAllUsers(String message) {

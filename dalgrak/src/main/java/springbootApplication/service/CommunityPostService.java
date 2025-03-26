@@ -1,7 +1,7 @@
 package springbootApplication.service;
 
 import springbootApplication.domain.CommunityPost;
-import springbootApplication.domain.CommunityPostType;
+import springbootApplication.domain.PostType;
 import springbootApplication.repository.CommunityPostRepository;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +44,7 @@ public class CommunityPostService {
     // 특정 게시판 타입에 해당하는 게시글 찾기
     public Optional<CommunityPost> getPostByIdAndBoardType(Long id, String boardType) {
         try {
-            CommunityPostType type = CommunityPostType.valueOf(boardType.toUpperCase()); // String → Enum 변환
+            PostType type = PostType.valueOf(boardType.toUpperCase()); // String → Enum 변환
             return communityPostRepository.findByIdAndBoardType(id, type);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid board type: " + boardType);

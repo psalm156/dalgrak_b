@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import springbootApplication.domain.Reply;
 import springbootApplication.domain.Comment;
+import springbootApplication.domain.User;
 import springbootApplication.repository.ReplyRepository;
 import springbootApplication.repository.UserRepository;
 import springbootApplication.repository.CommentRepository;
@@ -22,7 +23,7 @@ public class ReplyService {
 
     // 특정 댓글의 답글 가져오기
     public List<Reply> getRepliesByCommentId(Long commentId) {
-        return replyRepository.findByParentCommentId(commentId);
+        return replyRepository.findByCommentId(commentId);
     }
 
     // 답글 삭제 (본인만 가능)
@@ -31,7 +32,7 @@ public class ReplyService {
         Reply reply = replyRepository.findById(replyId)
                 .orElseThrow(() -> new RuntimeException("Reply not found"));
 
-        if (!reply.getUserId().equals(userId)) {
+        if (!reply.getUser().getUserId().equals(userId)) {
             throw new RuntimeException("You can only delete your own reply!");
         }
 
@@ -40,34 +41,38 @@ public class ReplyService {
 
     // 답글 추가
     @Transactional
-    public void addReply(Long commentId, Long userId, String content) {
-        // 답글 객체 생성
-        Reply reply = new Reply(commentId, userId, content);
-        replyRepository.save(reply);
-
-        // 해당 댓글의 작성자를 가져오기 (댓글 작성자에게 알림을 보냄)
+    public Reply addReply(Long commentId, Long userId, String content) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Long commentAuthorId = comment.getUserId();  // 댓글 작성자의 userId
+        Reply reply = Reply.builder()
+                .comment(comment)
+                .user(user)
+                .content(content)
+                .build();
 
-        // 댓글 작성자에게 푸시 알림 보내기
-        sendReplyNotificationToCommentAuthor(commentAuthorId, reply);
+        Reply savedReply = replyRepository.save(reply);
+
+        Long commentAuthorId = comment.getUser().getUserId();
+        sendReplyNotificationToCommentAuthor(commentAuthorId, savedReply);
+
+        return savedReply;
     }
 
     // 댓글 작성자에게 답글 알림 보내기
     private void sendReplyNotificationToCommentAuthor(Long commentAuthorId, Reply reply) {
-        userRepository.findById(commentAuthorId).ifPresent(user -> {
-            // 푸시 알림 정보 가져오기
-            String endpoint = user.getPushNotificationEndpoint();
-            String auth = user.getPushNotificationAuth();
-            String p256dh = user.getPushNotificationP256dh();
+        User user = userRepository.findById(commentAuthorId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-            // 알림 메시지 작성
-            String message = "Someone replied to your comment: " + reply.getContent();
+        String message = "Someone replied to your comment: " + reply.getContent();
 
-            // 푸시 알림 전송
-            webPushService.sendPushNotification(endpoint, message, auth, p256dh);
-        });
+        webPushService.sendPushNotification(
+                user.getPushNotificationEndpoint(),
+                message,
+                user.getPushNotificationAuth(),
+                user.getPushNotificationP256dh()
+        );
     }
 }
