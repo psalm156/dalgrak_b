@@ -5,10 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 public class IngredientDto {
-	private Long IngredientId;
-	private String name;
-	private String Quantity;
-
+    private Long ingredientId;  // 변수명 수정
+    private String name;
+    private String quantity;  // 변수명 수정
 }
