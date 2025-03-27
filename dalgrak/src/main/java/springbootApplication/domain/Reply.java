@@ -34,4 +34,11 @@ public class Reply {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    
+    public Reply(User user, String content, Comment comment) {
+        this.user = user;
+        this.content = content;
+        this.comment = comment;
+    }
+    
 }

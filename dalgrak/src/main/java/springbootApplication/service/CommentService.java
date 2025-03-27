@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import springbootApplication.domain.Comment;
+import springbootApplication.domain.CommunityPost;
 import springbootApplication.repository.CommentRepository;
 import springbootApplication.repository.UserRepository;
 import springbootApplication.service.WebPushService;
@@ -36,14 +37,16 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    // 댓글 추가
     @Transactional
     public void addComment(Long postId, Long userId, String content) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        CommunityPost post = new CommunityPost();
+        post.setPostId(postId);  // postId를 CommunityPost 객체로 변환
+
         Comment comment = Comment.builder()
-                .post(postId)
+                .post(post)
                 .user(user)
                 .content(content)
                 .build();

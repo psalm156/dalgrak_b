@@ -64,4 +64,3 @@ class ScheduledTaskServiceTest {
         verify(webPushService, times(1)).sendPushNotification("endpoint2", "오늘의 메뉴 추천: 일주일에 한 번씩!", "auth2", "p256dh2");
     }
 }
-

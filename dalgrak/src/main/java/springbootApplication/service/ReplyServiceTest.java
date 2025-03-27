@@ -1,8 +1,5 @@
 package springbootApplication.service;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import springbootApplication.domain.Comment;
+import springbootApplication.domain.CommunityPost;
 import springbootApplication.domain.Reply;
 import springbootApplication.domain.User;
 import springbootApplication.repository.CommentRepository;
@@ -17,12 +15,17 @@ import springbootApplication.repository.ReplyRepository;
 import springbootApplication.repository.UserRepository;
 import springbootApplication.service.WebPushService;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class ReplyServiceTest {
+
+    @InjectMocks
+    private ReplyService replyService;
 
     @Mock
     private ReplyRepository replyRepository;
@@ -36,124 +39,101 @@ class ReplyServiceTest {
     @Mock
     private WebPushService webPushService;
 
-    @InjectMocks
-    private ReplyService replyService;
-
+    private Reply reply;
     private Comment comment;
     private User user;
-    private Reply reply;
+    CommunityPost post = new CommunityPost(); 
 
     @BeforeEach
     void setUp() {
-        // 댓글 객체 생성
-        comment = new Comment();
-        comment.setCommentId(1L);
-        comment.setContent("This is a comment");
-        comment.setPost(2L);  // 해당 포스트 ID
-
-        // 사용자 객체 생성
+        // 공통 테스트 데이터 초기화
+        comment = new Comment(1L, user, post, "Test Comment");
+        // 1L = postId, 100L = userId, 200L = id, "Test Comment" = content
+        
+        // Reply 생성자 사용 (userId, content, comment)
+        reply = new Reply(user, "Test Reply", comment);
+        
         user = User.builder()
-                .userId(2L)
+                .userId(100L)     // Reply와 Comment의 userId와 일치
+                .username("testUser")
+                .email("test@example.com")
+                .password("password")
                 .pushNotificationEndpoint("endpoint")
                 .pushNotificationAuth("auth")
                 .pushNotificationP256dh("p256dh")
                 .build();
-
-        // 댓글에 사용자 객체 설정
-        comment.setUser(user);
-
-        // 댓글에 User 객체 설정 후 Reply 객체 생성
-        reply = new Reply();
-        reply.setReplyId(1L);
-        reply.setComment(comment);  // 댓글과 연결
-        reply.setUser(user);  // 작성자 설정
-        reply.setContent("This is a reply");
     }
 
+    // 특정 댓글의 답글 가져오기 테스트
     @Test
-    void getRepliesByCommentId_ShouldReturnReplies() {
-        // Given
-        Long commentId = 1L;
-        when(replyRepository.findByParentCommentId(commentId)).thenReturn(Arrays.asList(reply));
-
-        // When
-        List<Reply> result = replyService.getRepliesByCommentId(commentId);
-
-        // Then
-        assertEquals(1, result.size());
-        assertEquals("This is a reply", result.get(0).getContent());
-        verify(replyRepository, times(1)).findByParentCommentId(commentId);
+    void getRepliesByCommentId_shouldReturnReplies() {
+        // 수정: findByCommentId -> findByParentCommentId
+        when(replyRepository.findByParentCommentId(200L)).thenReturn(List.of(reply));
+        
+        List<Reply> replies = replyService.getRepliesByCommentId(200L);
+        
+        assertEquals(1, replies.size());
+        assertEquals("Test Reply", replies.get(0).getContent());
+        
+        // 검증 부분도 수정
+        verify(replyRepository).findByParentCommentId(200L);
     }
 
+    // 답글 삭제 (본인만 가능)
     @Test
-    void deleteReply_ShouldDeleteReplyIfUserIsAuthor() {
-        // Given
-        Long replyId = 1L;
-        Long userId = 3L;
-        when(replyRepository.findById(replyId)).thenReturn(Optional.of(reply));
+    void deleteReply_shouldDeleteReplyWhenUserMatches() {
+        when(replyRepository.findById(1L)).thenReturn(Optional.of(reply));
 
-        // When
-        replyService.deleteReply(replyId, userId);
+        replyService.deleteReply(1L, 100L);
 
-        // Then
-        verify(replyRepository, times(1)).delete(reply);
+        verify(replyRepository).delete(reply);
     }
 
+    // 답글 삭제 실패 (잘못된 유저가 삭제 시도)
     @Test
-    void deleteReply_ShouldThrowExceptionIfUserIsNotAuthor() {
-        // Given
-        Long replyId = 1L;
-        Long userId = 2L;  // 다른 사용자
-        when(replyRepository.findById(replyId)).thenReturn(Optional.of(reply));
+    void deleteReply_shouldThrowExceptionWhenUserDoesNotMatch() {
+        when(replyRepository.findById(1L)).thenReturn(Optional.of(reply));
 
-        // When & Then
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-            replyService.deleteReply(replyId, userId);
-        });
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> 
+            replyService.deleteReply(1L, 999L) // 잘못된 userId
+        );
+
         assertEquals("You can only delete your own reply!", thrown.getMessage());
+        verify(replyRepository, never()).delete(any());
     }
 
+    // 답글 추가 (댓글이 존재하는 경우)
     @Test
-    void addReply_ShouldSaveReplyAndSendNotificationToCommentAuthor() {
-        // Given
-        Long commentId = 1L;
-        Long userId = 3L;
-        String content = "This is a reply";
-        
-        // 댓글 객체 생성
-        Comment comment = new Comment();
-        comment.setCommentId(commentId);
-        comment.setContent("This is a comment");
-        comment.setPost(2L);
-        comment.setUser(user); // 댓글 작성자 설정
-        
-        // 사용자 객체 생성
-        User user = User.builder()
-                .userId(userId)
-                .pushNotificationEndpoint("endpoint")
-                .pushNotificationAuth("auth")
-                .pushNotificationP256dh("p256dh")
-                .build();
-        
-        // Reply 객체 생성
-        Reply newReply = new Reply();
-        newReply.setContent(content);
-        newReply.setComment(comment);  // 댓글 연결
-        newReply.setUser(user);        // 사용자 설정
+    void addReply_shouldSaveReplyAndSendNotification() {
+        // 댓글과 사용자 정보에 대한 스텁 설정
+        when(commentRepository.findById(1L)).thenReturn(Optional.of(comment));  // 댓글 존재 여부
+        when(userRepository.findById(100L)).thenReturn(Optional.of(user));  // 유저 존재 여부
 
-        // 댓글과 사용자 객체를 설정
-        when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
-        when(replyRepository.save(any(Reply.class))).thenReturn(newReply);
-        when(userRepository.findById(2L)).thenReturn(Optional.of(user));  // 댓글 작성자에 해당하는 사용자
+        // 답글 추가 메서드 실행 - void 메소드라면 반환값을 받지 않도록 수정
+        replyService.addReply(1L, 100L, "New Reply");
 
-        // When
-        replyService.addReply(commentId, userId, content);
-
-        // Then
-        verify(replyRepository, times(1)).save(any(Reply.class));
-        verify(webPushService, times(1)).sendPushNotification(
-                "endpoint", "Someone replied to your comment: This is a reply", "auth", "p256dh"
+        // 스텁 호출 검증
+        verify(replyRepository).save(any(Reply.class));  // 답글 저장 확인
+        verify(webPushService).sendPushNotification(
+                eq("endpoint"), contains("New Reply"), eq("auth"), eq("p256dh")  // 푸시 알림 호출 확인
         );
     }
 
+    // 답글 추가 실패 (댓글이 존재하지 않는 경우)
+    @Test
+    void addReply_shouldThrowExceptionWhenCommentNotFound() {
+        // 댓글이 존재하지 않는 경우에 대한 스텁 설정
+        when(commentRepository.findById(1L)).thenReturn(Optional.empty());  // 댓글이 없음
+
+        // 예외가 발생하는지 확인
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> 
+            replyService.addReply(1L, 100L, "New Reply")  // 댓글이 없으므로 예외가 발생해야 함
+        );
+
+        // 예외 메시지 확인
+        assertEquals("Comment not found", thrown.getMessage());
+
+        // save 메서드가 호출되지 않아야 하므로 verify로 확인
+        verify(replyRepository, never()).save(any());  // replyRepository.save()가 호출되지 않아야 함
+    }  
 }

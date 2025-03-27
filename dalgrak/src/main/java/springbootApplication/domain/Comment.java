@@ -35,8 +35,9 @@ public class Comment {
     @Column(nullable = false)
     private String content;
     
+    @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "post_id", nullable = false)
-    private Long post;
+    private CommunityPost post;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -44,5 +45,14 @@ public class Comment {
     
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+    
+    public Comment(Long commentId, User user, CommunityPost postId, String content) {
+        this.commentId = commentId;
+        this.user = user;
+        this.post = postId;  // 커뮤니티 게시글을 참조하는 필드
+        this.content = content;
+        this.createdAt = LocalDateTime.now();  // 생성일시 자동 설정
+    }
+
 }
 

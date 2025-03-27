@@ -3,6 +3,8 @@ package springbootApplication.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -37,6 +39,10 @@ public class CommunityPost {
     @Enumerated(EnumType.STRING)
     @Column(name = "post_type", nullable = false)
     private PostType postType;
+    
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
 
     @PreUpdate
     protected void onUpdate() {
