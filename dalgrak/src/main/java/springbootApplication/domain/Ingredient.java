@@ -22,6 +22,5 @@ public class Ingredient {
     private String name;
 
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
     private List<RecipeIngredient> recipes = new ArrayList<>();
 }

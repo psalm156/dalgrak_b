@@ -8,8 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import springbootApplication.domain.Difficulty;
+import springbootApplication.domain.Ingredient;
 import springbootApplication.domain.Recipe;
 import springbootApplication.domain.RecipeIngredient;
+import springbootApplication.repository.IngredientRepository; // IngredientRepository 추가
 
 @Getter
 @Setter
@@ -28,6 +30,9 @@ public class RecipeRequestDto {
         this.preparationTime = preparationTime;
     }
 
+    // IngredientRepository를 서비스에서 주입
+    private IngredientRepository ingredientRepository;
+
     public Recipe toEntity() {
         Recipe recipe = new Recipe();
         recipe.setTitle(this.title);
@@ -36,11 +41,15 @@ public class RecipeRequestDto {
         recipe.setInstructions(this.instructions);
 
         List<RecipeIngredient> recipeIngredients = this.ingredients.stream()
-            .map(dto -> new RecipeIngredient(dto.getName(), dto.getQuantity(), recipe))  // Ingredient 대신 String
+            .map(dto -> {
+                Ingredient ingredient = ingredientRepository.findByName(dto.getName())
+                        .orElseThrow(() -> new RuntimeException("Ingredient not found: " + dto.getName()));
+
+                return new RecipeIngredient(dto.getQuantity(), ingredient, recipe);
+            })
             .collect(Collectors.toList());
 
         recipe.setIngredients(recipeIngredients);
         return recipe;
     }
-
 }
